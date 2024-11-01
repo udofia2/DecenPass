@@ -1,0 +1,5 @@
+#pragma version 10
+
+smart_contracts.decent_pass_smartcontract.contract.DecentPassSmartcontract.clear_state_program:
+    pushint 1 // 1
+    return
