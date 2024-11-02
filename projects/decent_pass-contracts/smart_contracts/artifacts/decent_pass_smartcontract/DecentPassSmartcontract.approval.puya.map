@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": [
-    "..\\..\\decent_pass_smartcontract\\contract.py"
+    "../../decent_pass_smartcontract/contract.py"
   ],
   "mappings": ";;;;;;;;;AAIA;;;AAAA;;AAAA;;;AAAA;;;;;;AAAA;;;AAAA;;;;AAAA;AAAA;AACK;;AAAA;AAAA;AAAA;;AAAA;AADL;;;AAAA;;;AACK;;;AAAA;AAAA;AAAA;AAAA;;;AAAA;AAAA;AAAA;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AADL;;AAAA;;;;;;;;;AAAA;AAAA;AACA;;;AAEe;;;;;;;;;AAAA;;AAAA;AAAP",
   "op_pc_offset": 0,
