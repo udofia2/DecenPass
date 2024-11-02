@@ -1,5 +1,7 @@
 
 import SectionTitle from "../Common/SectionTitle";
+import aboutImage from "../../assets/images/about/about-image.svg";
+import aboutImageDark from "../../assets/images/about/about-image-dark.svg";
 
 const checkIcon = (
   <svg width="16" height="13" viewBox="0 0 16 13" className="fill-current">
@@ -55,13 +57,13 @@ const AboutSectionOne = () => {
                 data-wow-delay=".2s"
               >
                 <img
-                  src="/images/about/about-image.svg"
+                  src={aboutImage}
                   alt="about-image"
                   // fill
                   className="drop-shadow-three mx-auto max-w-full dark:hidden dark:drop-shadow-none lg:mr-0"
                 />
                 <img
-                  src="../../images/about/about-image-dark.svg"
+                  src={aboutImageDark}
                   alt="about-image"
                   // fill
                   className="drop-shadow-three mx-auto hidden max-w-full dark:block dark:drop-shadow-none lg:mr-0"

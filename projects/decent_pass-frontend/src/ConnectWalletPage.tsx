@@ -1,13 +1,14 @@
 // src/components/Home.tsx
 import { useWallet } from '@txnlab/use-wallet'
 import React, { useState } from 'react'
-import ConnectWallet from './components/ConnectWallet'
+
 import Transact from './components/Transact'
 import AppCalls from './components/AppCalls'
+import ConnectWallet from './components/ConnectWallet'
 
 interface HomeProps {}
 
-const Home: React.FC<HomeProps> = () => {
+const ConnectWalletPage: React.FC<HomeProps> = () => {
   const [openWalletModal, setOpenWalletModal] = useState<boolean>(false)
   const [openDemoModal, setOpenDemoModal] = useState<boolean>(false)
   const [appCallsDemoModal, setAppCallsDemoModal] = useState<boolean>(false)
@@ -26,8 +27,8 @@ const Home: React.FC<HomeProps> = () => {
   }
 
   return (
-    <div className="hero min-h-screen bg-teal-400">
-      <div className="hero-content text-center rounded-lg p-6 max-w-md bg-white mx-auto">
+    <div className="hero min-h-screen flex justify-center items-center">
+      <div className="dark:bg-gray-dark hero-content text-center rounded-lg p-6 max-w-md bg-white mx-auto">
         <div className="max-w-md">
           <h1 className="text-4xl">
             Welcome to <div className="font-bold">AlgoKit 🙂</div>
@@ -73,4 +74,4 @@ const Home: React.FC<HomeProps> = () => {
   )
 }
 
-export default Home
+export default ConnectWalletPage

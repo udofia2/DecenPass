@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import ThemeToggler from "./ThemeToggler";
 import menuData from "./menuData";
+import logo from "../../assets/images/logo/logo-2.svg";
+import logoDark from "../../assets/images/logo/logo.svg";
+
 
 const Header = () => {
   // Navbar toggle
@@ -56,14 +59,14 @@ const Header = () => {
                 } `}
               >
                 <img
-                  src="/images/logo/logo-2.svg"
+                  src={logo}
                   alt="logo"
                   width={140}
                   height={30}
                   className="w-full dark:hidden"
                 />
                 <img
-                  src="/images/logo/logo.svg"
+                  src={logoDark}
                   alt="logo"
                   width={140}
                   height={30}
@@ -158,6 +161,12 @@ const Header = () => {
                 </nav>
               </div>
               <div className="flex items-center justify-end pr-16 lg:pr-0">
+                <Link
+                  to="/connectwallet"
+                  className="hidden px-7 py-3 text-base font-medium text-dark hover:opacity-70 dark:text-white md:block"
+                  >
+                  Connect Wallet
+                </Link>
                 <Link
                   to="/signin"
                   className="hidden px-7 py-3 text-base font-medium text-dark hover:opacity-70 dark:text-white md:block"

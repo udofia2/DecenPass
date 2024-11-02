@@ -1,3 +1,5 @@
+import aboutImage from "../../assets/images/about/about-image-2.svg";
+import aboutImageDark from "../../assets/images/about/about-image-2-dark.svg";
 
 const AboutSectionTwo = () => {
   return (
@@ -10,13 +12,13 @@ const AboutSectionTwo = () => {
               data-wow-delay=".15s"
             >
               <img
-                src="/images/about/about-image-2.svg"
+                src={aboutImage}
                 alt="about image"
                 // fill
                 className="drop-shadow-three dark:hidden dark:drop-shadow-none"
               />
               <img
-                src="/images/about/about-image-2-dark.svg"
+                src={aboutImageDark}
                 alt="about image"
                 // fill
                 className="drop-shadow-three hidden dark:block dark:drop-shadow-none"

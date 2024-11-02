@@ -15,6 +15,7 @@ import Home from "./app/page";
 import SigninPage from "./app/signin/page";
 import SignupPage from "./app/signup/page";
 import ContactPage from "./app/contact/page";
+import ConnectWalletPage from "./ConnectWalletPage";
 
 let providersArray: ProvidersArray;
 if (import.meta.env.VITE_ALGOD_NETWORK === "") {
@@ -79,6 +80,10 @@ const router = createBrowserRouter([
         path: "/contact",
         element: <ContactPage />,
       },
+      {
+        path: "/connectwallet",
+        element: <ConnectWalletPage />,
+      },
     ],
   },
 ]);
@@ -100,8 +105,7 @@ export default function App() {
   return (
     <SnackbarProvider maxSnack={3}>
       <WalletProvider value={walletProviders}>
-        {/* <Home /> */}
-        {/* <body className={`bg-[#FCFCFC] dark:bg-black `}></body> */}
+         
         <RouterProvider router={router} />
       </WalletProvider>
     </SnackbarProvider>
