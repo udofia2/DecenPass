@@ -1,15 +1,25 @@
-import { DeflyWalletConnect } from '@blockshake/defly-connect'
-import { DaffiWalletConnect } from '@daffiwallet/connect'
-import { PeraWalletConnect } from '@perawallet/connect'
-import { PROVIDER_ID, ProvidersArray, WalletProvider, useInitializeProviders } from '@txnlab/use-wallet'
-import algosdk from 'algosdk'
-import { SnackbarProvider } from 'notistack'
-import Home from './Home'
-import { getAlgodConfigFromViteEnvironment, getKmdConfigFromViteEnvironment } from './utils/network/getAlgoClientConfigs'
+import { DeflyWalletConnect } from "@blockshake/defly-connect";
+import { DaffiWalletConnect } from "@daffiwallet/connect";
+import { PeraWalletConnect } from "@perawallet/connect";
+import { PROVIDER_ID, ProvidersArray, WalletProvider, useInitializeProviders } from "@txnlab/use-wallet";
+import algosdk from "algosdk";
+import { SnackbarProvider } from "notistack";
+import { getAlgodConfigFromViteEnvironment, getKmdConfigFromViteEnvironment } from "./utils/network/getAlgoClientConfigs";
+import { Providers } from "./app/providers";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import ScrollToTop from "./components/ScrollToTop";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import AboutPage from "./app/about/page";
+import Home from "./app/page";
+import SigninPage from "./app/signin/page";
+import SignupPage from "./app/signup/page";
+import ContactPage from "./app/contact/page";
+import ConnectWalletPage from "./ConnectWalletPage";
 
-let providersArray: ProvidersArray
-if (import.meta.env.VITE_ALGOD_NETWORK === '') {
-  const kmdConfig = getKmdConfigFromViteEnvironment()
+let providersArray: ProvidersArray;
+if (import.meta.env.VITE_ALGOD_NETWORK === "") {
+  const kmdConfig = getKmdConfigFromViteEnvironment();
   providersArray = [
     {
       id: PROVIDER_ID.KMD,
@@ -21,7 +31,7 @@ if (import.meta.env.VITE_ALGOD_NETWORK === '') {
         port: String(kmdConfig.port),
       },
     },
-  ]
+  ];
 } else {
   providersArray = [
     { id: PROVIDER_ID.DEFLY, clientStatic: DeflyWalletConnect },
@@ -30,11 +40,56 @@ if (import.meta.env.VITE_ALGOD_NETWORK === '') {
     { id: PROVIDER_ID.EXODUS },
     // If you are interested in WalletConnect v2 provider
     // refer to https://github.com/TxnLab/use-wallet for detailed integration instructions
-  ]
+  ];
 }
 
+const Layout = () => {
+  return (
+    <Providers>
+      <Header />
+      <Outlet />
+      <Footer />
+      <ScrollToTop />
+    </Providers>
+  );
+};
+
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/about",
+        element: <AboutPage />,
+      },
+      {
+        path: "/signin",
+        element: <SigninPage />,
+      },
+      {
+        path: "/signup",
+        element: <SignupPage />,
+      },
+      {
+        path: "/contact",
+        element: <ContactPage />,
+      },
+      {
+        path: "/connectwallet",
+        element: <ConnectWalletPage />,
+      },
+    ],
+  },
+]);
+
 export default function App() {
-  const algodConfig = getAlgodConfigFromViteEnvironment()
+  const algodConfig = getAlgodConfigFromViteEnvironment();
 
   const walletProviders = useInitializeProviders({
     providers: providersArray,
@@ -45,13 +100,14 @@ export default function App() {
       nodeToken: String(algodConfig.token),
     },
     algosdkStatic: algosdk,
-  })
+  });
 
   return (
     <SnackbarProvider maxSnack={3}>
       <WalletProvider value={walletProviders}>
-        <Home />
+         
+        <RouterProvider router={router} />
       </WalletProvider>
     </SnackbarProvider>
-  )
+  );
 }
