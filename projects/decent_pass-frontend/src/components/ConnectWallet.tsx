@@ -12,7 +12,7 @@ const ConnectWallet = ({ openModal, closeModal }: ConnectWalletInterface) => {
   const isKmd = (provider: Provider) => provider.metadata.name.toLowerCase() === 'kmd'
 
   return (
-    <dialog id="connect_wallet_modal" className={`modal ${openModal ? 'modal-open' : ''}`}style={{ display: openModal ? 'block' : 'none' }}>
+    <dialog id="connect_wallet_modal" className={`modal ${openModal ? 'modal-open absolute flex justify-center items-center top-[400px] p-10 rounded-xl' : ''}`}style={{ display: openModal ? 'block' : 'none' }}>
       <form method="dialog" className="modal-box">
         <h3 className="font-bold text-2xl">Select wallet providers</h3>
 
@@ -41,7 +41,7 @@ const ConnectWallet = ({ openModal, closeModal }: ConnectWalletInterface) => {
                     style={{ objectFit: 'contain', width: '30px', height: 'auto' }}
                   />
                 )}
-                <span>{isKmd(provider) ? 'LocalNet Wallet' : provider.metadata.name}</span>
+                <span>{isKmd(provider) ? 'Connect Wallet' : provider.metadata.name}</span>
               </button>
             ))}
         </div>

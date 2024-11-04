@@ -3,7 +3,7 @@ import * as algokit from '@algorandfoundation/algokit-utils'
 
 import { Metadata } from "next";
 import { Provider, useWallet } from "@txnlab/use-wallet";
-import { register } from "../../components/Methods";
+
 import { useState } from "react";
 import { DecentPassSmartContractClient } from "../../contracts/DecentPassSmartcontract";
 import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from "../../utils/network/getAlgoClientConfigs";
@@ -54,7 +54,7 @@ const SignupPage = () => {
   const callRegisterFn = async () => {
     setLoading(true);
     console.log("registering")
-    await dPClient.registerUser({userId: BigInt(1), profileData: "Joel"}).catch((e: Error) => {
+    await dPClient.registerUser({userId: BigInt(5), profileData: "Joel"}).catch((e: Error) => {
       enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
       setLoading(false)
       return
@@ -74,7 +74,7 @@ const SignupPage = () => {
                 <p className="mb-11 text-center text-base font-medium text-body-color">
                   It’s totally free and super easy
                 </p>
-                <button className="border-stroke dark:text-body-color-dark dark:shadow-two mb-6 flex w-full items-center justify-center rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none">
+                {/* <button className="border-stroke dark:text-body-color-dark dark:shadow-two mb-6 flex w-full items-center justify-center rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none">
                   <span className="mr-3">
                     <svg
                       width="20"
@@ -109,9 +109,9 @@ const SignupPage = () => {
                     </svg>
                   </span>
                   Sign in with Google
-                </button>
+                </button> */}
 
-                <button className="border-stroke dark:text-body-color-dark dark:shadow-two mb-6 flex w-full items-center justify-center rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none">
+                {/* <button className="border-stroke dark:text-body-color-dark dark:shadow-two mb-6 flex w-full items-center justify-center rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none">
                   <span className="mr-3">
                     <svg
                       fill="currentColor"
@@ -124,14 +124,14 @@ const SignupPage = () => {
                     </svg>
                   </span>
                   Sign in with Github
-                </button>
-                <div className="mb-8 flex items-center justify-center">
+                </button> */}
+                {/* <div className="mb-8 flex items-center justify-center">
                   <span className="hidden h-[1px] w-full max-w-[60px] bg-body-color/50 sm:block"></span>
                   <p className="w-full px-5 text-center text-base font-medium text-body-color">
                     Or, register with your email
                   </p>
                   <span className="hidden h-[1px] w-full max-w-[60px] bg-body-color/50 sm:block"></span>
-                </div>
+                </div> */}
                 {/* <form> */}
                   <div className="mb-8">
                     <label
@@ -148,7 +148,7 @@ const SignupPage = () => {
                       className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
                     />
                   </div>
-                  <div className="mb-8">
+                  {/* <div className="mb-8">
                     <label
                       htmlFor="email"
                       className="mb-3 block text-sm text-dark dark:text-white"
@@ -177,7 +177,7 @@ const SignupPage = () => {
                       placeholder="Enter your Password"
                       className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
                     />
-                  </div>
+                  </div> */}
                   <div className="mb-8 flex">
                     <label
                       htmlFor="checkboxLabel"

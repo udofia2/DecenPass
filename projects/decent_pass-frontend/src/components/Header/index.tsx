@@ -7,6 +7,7 @@ import logoDark from "../../assets/images/logo/logo.svg";
 import { Provider, useWallet } from "@txnlab/use-wallet";
 import { getAlgodConfigFromViteEnvironment } from "../../utils/network/getAlgoClientConfigs";
 import { ellipseAddress } from "../../utils/ellipseAddress";
+import ConnectWallet from "../ConnectWallet";
 
 const Header = () => {
   // Navbar toggle
@@ -17,8 +18,8 @@ const Header = () => {
   const location = useLocation();
   const currentPath = location.pathname;
 
-  const [openWalletModal, setOpenWalletModal] = useState<boolean>(false)
-  
+  const [openWalletModal, setOpenWalletModal] = useState<boolean>(false);
+
   const { providers, activeAddress } = useWallet();
 
   const isKmd = (provider: Provider) => provider.metadata.name.toLowerCase() === "kmd";
@@ -52,8 +53,8 @@ const Header = () => {
   };
 
   const toggleWalletModal = () => {
-    setOpenWalletModal(!openWalletModal)
-  }
+    setOpenWalletModal(!openWalletModal);
+  };
 
   return (
     <>
@@ -180,10 +181,16 @@ const Header = () => {
                           style={{ objectFit: "contain", width: "30px", height: "auto" }}
                         />
                       )}
-                      <span>{isKmd(provider) ? "LocalNet Wallet" : provider.metadata.name}</span>
+                      <span>{isKmd(provider) ? "Connect Wallet" : provider.metadata.name}</span>
                     </button>
                   ))}
-                {activeAddress && <>{ellipseAddress(activeAddress)}</>}
+                {activeAddress && (
+                  <>
+                    <button data-test-id="connect-wallet" className="btn m-2" onClick={toggleWalletModal}>
+                      {ellipseAddress(activeAddress)}
+                    </button>
+                  </>
+                )}
                 {/* <button
                     className="btn btn-warning"
                     data-test-id="logout"
@@ -220,6 +227,9 @@ const Header = () => {
             </div>
           </div>
         </div>
+        
+            <ConnectWallet openModal={openWalletModal} closeModal={toggleWalletModal} />
+          
       </header>
     </>
   );
