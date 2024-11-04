@@ -104,7 +104,7 @@ const Header = () => {
                   }`}
                 >
                   <ul className="block lg:flex lg:space-x-12">
-                    {menuData.map((menuItem, index) => (
+                    {/* {menuData.map((menuItem, index) => (
                       <li key={index} className="group relative">
                         {menuItem.path ? (
                           <Link
@@ -140,7 +140,7 @@ const Header = () => {
                                 openIndex === index ? "block" : "hidden"
                               }`}
                             >
-                              {/* {menuItem.submenu.map((submenuItem: any, index: any) => (
+                              {menuItem.submenu.map((submenuItem: any, index: any) => (
                                 <Link
                                   to={submenuItem.path}
                                   key={index}
@@ -148,12 +148,12 @@ const Header = () => {
                                 >
                                   {submenuItem.title}
                                 </Link>
-                              ))} */}
+                              ))}
                             </div>
                           </>
                         )}
                       </li>
-                    ))}
+                    ))} */}
                   </ul>
                 </nav>
               </div>
