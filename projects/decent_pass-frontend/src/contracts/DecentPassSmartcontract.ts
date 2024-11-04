@@ -31,15 +31,45 @@ import type { ABIResult, TransactionWithSigner } from 'algosdk'
 import { Algodv2, OnApplicationComplete, Transaction, AtomicTransactionComposer, modelsv2 } from 'algosdk'
 export const APP_SPEC: AppSpec = {
   "hints": {
-    "hello(string)string": {
+    "register_user(uint64,string)void": {
+      "call_config": {
+        "no_op": "CALL"
+      }
+    },
+    "assign_validator(account,uint64)void": {
+      "call_config": {
+        "no_op": "CALL"
+      }
+    },
+    "verify_user(uint64,account)void": {
+      "call_config": {
+        "no_op": "CALL"
+      }
+    },
+    "claim_stake(account)void": {
+      "call_config": {
+        "no_op": "CALL"
+      }
+    },
+    "retrieve_profile(uint64)string": {
+      "call_config": {
+        "no_op": "CALL"
+      }
+    },
+    "penalty_validator(account,uint64)void": {
+      "call_config": {
+        "no_op": "CALL"
+      }
+    },
+    "adjust_validator_reward(account,uint64)void": {
       "call_config": {
         "no_op": "CALL"
       }
     }
   },
   "source": {
-    "approval": "I3ByYWdtYSB2ZXJzaW9uIDEwCgpzbWFydF9jb250cmFjdHMuZGVjZW50X3Bhc3Nfc21hcnRjb250cmFjdC5jb250cmFjdC5EZWNlbnRQYXNzU21hcnRjb250cmFjdC5hcHByb3ZhbF9wcm9ncmFtOgogICAgaW50Y2Jsb2NrIDAgMQogICAgY2FsbHN1YiBfX3B1eWFfYXJjNF9yb3V0ZXJfXwogICAgcmV0dXJuCgoKLy8gc21hcnRfY29udHJhY3RzLmRlY2VudF9wYXNzX3NtYXJ0Y29udHJhY3QuY29udHJhY3QuRGVjZW50UGFzc1NtYXJ0Y29udHJhY3QuX19wdXlhX2FyYzRfcm91dGVyX18oKSAtPiB1aW50NjQ6Cl9fcHV5YV9hcmM0X3JvdXRlcl9fOgogICAgcHJvdG8gMCAxCiAgICB0eG4gTnVtQXBwQXJncwogICAgYnogX19wdXlhX2FyYzRfcm91dGVyX19fYmFyZV9yb3V0aW5nQDUKICAgIHB1c2hieXRlcyAweDAyYmVjZTExIC8vIG1ldGhvZCAiaGVsbG8oc3RyaW5nKXN0cmluZyIKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDAKICAgIG1hdGNoIF9fcHV5YV9hcmM0X3JvdXRlcl9fX2hlbGxvX3JvdXRlQDIKICAgIGludGNfMCAvLyAwCiAgICByZXRzdWIKCl9fcHV5YV9hcmM0X3JvdXRlcl9fX2hlbGxvX3JvdXRlQDI6CiAgICB0eG4gT25Db21wbGV0aW9uCiAgICAhCiAgICBhc3NlcnQgLy8gT25Db21wbGV0aW9uIGlzIE5vT3AKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBhc3NlcnQgLy8gaXMgbm90IGNyZWF0aW5nCiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAxCiAgICBleHRyYWN0IDIgMAogICAgY2FsbHN1YiBoZWxsbwogICAgZHVwCiAgICBsZW4KICAgIGl0b2IKICAgIGV4dHJhY3QgNiAyCiAgICBzd2FwCiAgICBjb25jYXQKICAgIHB1c2hieXRlcyAweDE1MWY3Yzc1CiAgICBzd2FwCiAgICBjb25jYXQKICAgIGxvZwogICAgaW50Y18xIC8vIDEKICAgIHJldHN1YgoKX19wdXlhX2FyYzRfcm91dGVyX19fYmFyZV9yb3V0aW5nQDU6CiAgICB0eG4gT25Db21wbGV0aW9uCiAgICBibnogX19wdXlhX2FyYzRfcm91dGVyX19fYWZ0ZXJfaWZfZWxzZUA5CiAgICB0eG4gQXBwbGljYXRpb25JRAogICAgIQogICAgYXNzZXJ0IC8vIGlzIGNyZWF0aW5nCiAgICBpbnRjXzEgLy8gMQogICAgcmV0c3ViCgpfX3B1eWFfYXJjNF9yb3V0ZXJfX19hZnRlcl9pZl9lbHNlQDk6CiAgICBpbnRjXzAgLy8gMAogICAgcmV0c3ViCgoKLy8gc21hcnRfY29udHJhY3RzLmRlY2VudF9wYXNzX3NtYXJ0Y29udHJhY3QuY29udHJhY3QuRGVjZW50UGFzc1NtYXJ0Y29udHJhY3QuaGVsbG8obmFtZTogYnl0ZXMpIC0+IGJ5dGVzOgpoZWxsbzoKICAgIHByb3RvIDEgMQogICAgcHVzaGJ5dGVzICJIZWxsbywgIgogICAgZnJhbWVfZGlnIC0xCiAgICBjb25jYXQKICAgIHJldHN1Ygo=",
-    "clear": "I3ByYWdtYSB2ZXJzaW9uIDEwCgpzbWFydF9jb250cmFjdHMuZGVjZW50X3Bhc3Nfc21hcnRjb250cmFjdC5jb250cmFjdC5EZWNlbnRQYXNzU21hcnRjb250cmFjdC5jbGVhcl9zdGF0ZV9wcm9ncmFtOgogICAgcHVzaGludCAxIC8vIDEKICAgIHJldHVybgo="
+    "approval": "I3ByYWdtYSB2ZXJzaW9uIDEwCgpzbWFydF9jb250cmFjdHMuZGVjZW50X3Bhc3Nfc21hcnRjb250cmFjdC5jb250cmFjdC5EZWNlbnRQYXNzU21hcnRDb250cmFjdC5hcHByb3ZhbF9wcm9ncmFtOgogICAgaW50Y2Jsb2NrIDEgMCAxMDAwCiAgICBieXRlY2Jsb2NrICJ1c2VyXyIgInN0YWtlXyIgInZlcmlmeV8iICJyZXdhcmRfIiAicGVuYWx0eV8iCiAgICBjYWxsc3ViIF9fcHV5YV9hcmM0X3JvdXRlcl9fCiAgICByZXR1cm4KCgovLyBzbWFydF9jb250cmFjdHMuZGVjZW50X3Bhc3Nfc21hcnRjb250cmFjdC5jb250cmFjdC5EZWNlbnRQYXNzU21hcnRDb250cmFjdC5fX3B1eWFfYXJjNF9yb3V0ZXJfXygpIC0+IHVpbnQ2NDoKX19wdXlhX2FyYzRfcm91dGVyX186CiAgICBwcm90byAwIDEKICAgIHR4biBOdW1BcHBBcmdzCiAgICBieiBfX3B1eWFfYXJjNF9yb3V0ZXJfX19iYXJlX3JvdXRpbmdAMTEKICAgIHB1c2hieXRlc3MgMHgwYzlhYmFhNSAweDAyNTUzNmNhIDB4MDhkMTBhZTMgMHg2M2VkNzU5OSAweGVlMjZjZjk1IDB4ODhlYTUzMjMgMHg5NzllM2ViYiAvLyBtZXRob2QgInJlZ2lzdGVyX3VzZXIodWludDY0LHN0cmluZyl2b2lkIiwgbWV0aG9kICJhc3NpZ25fdmFsaWRhdG9yKGFjY291bnQsdWludDY0KXZvaWQiLCBtZXRob2QgInZlcmlmeV91c2VyKHVpbnQ2NCxhY2NvdW50KXZvaWQiLCBtZXRob2QgImNsYWltX3N0YWtlKGFjY291bnQpdm9pZCIsIG1ldGhvZCAicmV0cmlldmVfcHJvZmlsZSh1aW50NjQpc3RyaW5nIiwgbWV0aG9kICJwZW5hbHR5X3ZhbGlkYXRvcihhY2NvdW50LHVpbnQ2NCl2b2lkIiwgbWV0aG9kICJhZGp1c3RfdmFsaWRhdG9yX3Jld2FyZChhY2NvdW50LHVpbnQ2NCl2b2lkIgogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMAogICAgbWF0Y2ggX19wdXlhX2FyYzRfcm91dGVyX19fcmVnaXN0ZXJfdXNlcl9yb3V0ZUAyIF9fcHV5YV9hcmM0X3JvdXRlcl9fX2Fzc2lnbl92YWxpZGF0b3Jfcm91dGVAMyBfX3B1eWFfYXJjNF9yb3V0ZXJfX192ZXJpZnlfdXNlcl9yb3V0ZUA0IF9fcHV5YV9hcmM0X3JvdXRlcl9fX2NsYWltX3N0YWtlX3JvdXRlQDUgX19wdXlhX2FyYzRfcm91dGVyX19fcmV0cmlldmVfcHJvZmlsZV9yb3V0ZUA2IF9fcHV5YV9hcmM0X3JvdXRlcl9fX3BlbmFsdHlfdmFsaWRhdG9yX3JvdXRlQDcgX19wdXlhX2FyYzRfcm91dGVyX19fYWRqdXN0X3ZhbGlkYXRvcl9yZXdhcmRfcm91dGVAOAogICAgaW50Y18xIC8vIDAKICAgIHJldHN1YgoKX19wdXlhX2FyYzRfcm91dGVyX19fcmVnaXN0ZXJfdXNlcl9yb3V0ZUAyOgogICAgdHhuIE9uQ29tcGxldGlvbgogICAgIQogICAgYXNzZXJ0IC8vIE9uQ29tcGxldGlvbiBpcyBOb09wCiAgICB0eG4gQXBwbGljYXRpb25JRAogICAgYXNzZXJ0IC8vIGlzIG5vdCBjcmVhdGluZwogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQogICAgYnRvaQogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMgogICAgZXh0cmFjdCAyIDAKICAgIGNhbGxzdWIgcmVnaXN0ZXJfdXNlcgogICAgaW50Y18wIC8vIDEKICAgIHJldHN1YgoKX19wdXlhX2FyYzRfcm91dGVyX19fYXNzaWduX3ZhbGlkYXRvcl9yb3V0ZUAzOgogICAgdHhuIE9uQ29tcGxldGlvbgogICAgIQogICAgYXNzZXJ0IC8vIE9uQ29tcGxldGlvbiBpcyBOb09wCiAgICB0eG4gQXBwbGljYXRpb25JRAogICAgYXNzZXJ0IC8vIGlzIG5vdCBjcmVhdGluZwogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQogICAgYnRvaQogICAgdHhuYXMgQWNjb3VudHMKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDIKICAgIGJ0b2kKICAgIGNhbGxzdWIgYXNzaWduX3ZhbGlkYXRvcgogICAgaW50Y18wIC8vIDEKICAgIHJldHN1YgoKX19wdXlhX2FyYzRfcm91dGVyX19fdmVyaWZ5X3VzZXJfcm91dGVANDoKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgTm9PcAogICAgdHhuIEFwcGxpY2F0aW9uSUQKICAgIGFzc2VydCAvLyBpcyBub3QgY3JlYXRpbmcKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDEKICAgIGJ0b2kKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDIKICAgIGJ0b2kKICAgIHR4bmFzIEFjY291bnRzCiAgICBjYWxsc3ViIHZlcmlmeV91c2VyCiAgICBpbnRjXzAgLy8gMQogICAgcmV0c3ViCgpfX3B1eWFfYXJjNF9yb3V0ZXJfX19jbGFpbV9zdGFrZV9yb3V0ZUA1OgogICAgdHhuIE9uQ29tcGxldGlvbgogICAgIQogICAgYXNzZXJ0IC8vIE9uQ29tcGxldGlvbiBpcyBOb09wCiAgICB0eG4gQXBwbGljYXRpb25JRAogICAgYXNzZXJ0IC8vIGlzIG5vdCBjcmVhdGluZwogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQogICAgYnRvaQogICAgdHhuYXMgQWNjb3VudHMKICAgIGNhbGxzdWIgY2xhaW1fc3Rha2UKICAgIGludGNfMCAvLyAxCiAgICByZXRzdWIKCl9fcHV5YV9hcmM0X3JvdXRlcl9fX3JldHJpZXZlX3Byb2ZpbGVfcm91dGVANjoKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgTm9PcAogICAgdHhuIEFwcGxpY2F0aW9uSUQKICAgIGFzc2VydCAvLyBpcyBub3QgY3JlYXRpbmcKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDEKICAgIGJ0b2kKICAgIGNhbGxzdWIgcmV0cmlldmVfcHJvZmlsZQogICAgZHVwCiAgICBsZW4KICAgIGl0b2IKICAgIGV4dHJhY3QgNiAyCiAgICBzd2FwCiAgICBjb25jYXQKICAgIHB1c2hieXRlcyAweDE1MWY3Yzc1CiAgICBzd2FwCiAgICBjb25jYXQKICAgIGxvZwogICAgaW50Y18wIC8vIDEKICAgIHJldHN1YgoKX19wdXlhX2FyYzRfcm91dGVyX19fcGVuYWx0eV92YWxpZGF0b3Jfcm91dGVANzoKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgTm9PcAogICAgdHhuIEFwcGxpY2F0aW9uSUQKICAgIGFzc2VydCAvLyBpcyBub3QgY3JlYXRpbmcKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDEKICAgIGJ0b2kKICAgIHR4bmFzIEFjY291bnRzCiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAyCiAgICBidG9pCiAgICBjYWxsc3ViIHBlbmFsdHlfdmFsaWRhdG9yCiAgICBpbnRjXzAgLy8gMQogICAgcmV0c3ViCgpfX3B1eWFfYXJjNF9yb3V0ZXJfX19hZGp1c3RfdmFsaWRhdG9yX3Jld2FyZF9yb3V0ZUA4OgogICAgdHhuIE9uQ29tcGxldGlvbgogICAgIQogICAgYXNzZXJ0IC8vIE9uQ29tcGxldGlvbiBpcyBOb09wCiAgICB0eG4gQXBwbGljYXRpb25JRAogICAgYXNzZXJ0IC8vIGlzIG5vdCBjcmVhdGluZwogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQogICAgYnRvaQogICAgdHhuYXMgQWNjb3VudHMKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDIKICAgIGJ0b2kKICAgIGNhbGxzdWIgYWRqdXN0X3ZhbGlkYXRvcl9yZXdhcmQKICAgIGludGNfMCAvLyAxCiAgICByZXRzdWIKCl9fcHV5YV9hcmM0X3JvdXRlcl9fX2JhcmVfcm91dGluZ0AxMToKICAgIHR4biBPbkNvbXBsZXRpb24KICAgIGJueiBfX3B1eWFfYXJjNF9yb3V0ZXJfX19hZnRlcl9pZl9lbHNlQDE1CiAgICB0eG4gQXBwbGljYXRpb25JRAogICAgIQogICAgYXNzZXJ0IC8vIGlzIGNyZWF0aW5nCiAgICBpbnRjXzAgLy8gMQogICAgcmV0c3ViCgpfX3B1eWFfYXJjNF9yb3V0ZXJfX19hZnRlcl9pZl9lbHNlQDE1OgogICAgaW50Y18xIC8vIDAKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5kZWNlbnRfcGFzc19zbWFydGNvbnRyYWN0LmNvbnRyYWN0LkRlY2VudFBhc3NTbWFydENvbnRyYWN0LnJlZ2lzdGVyX3VzZXIodXNlcl9pZDogdWludDY0LCBwcm9maWxlX2RhdGE6IGJ5dGVzKSAtPiB2b2lkOgpyZWdpc3Rlcl91c2VyOgogICAgcHJvdG8gMiAwCiAgICBmcmFtZV9kaWcgLTIKICAgIGl0b2IKICAgIGJ5dGVjXzAgLy8gInVzZXJfIgogICAgZGlnIDEKICAgIGNvbmNhdAogICAgZHVwCiAgICBib3hfZGVsCiAgICBwb3AKICAgIGZyYW1lX2RpZyAtMQogICAgYm94X3B1dAogICAgYnl0ZWNfMiAvLyAidmVyaWZ5XyIKICAgIHN3YXAKICAgIGNvbmNhdAogICAgaW50Y18xIC8vIDAKICAgIGl0b2IKICAgIGJveF9wdXQKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5kZWNlbnRfcGFzc19zbWFydGNvbnRyYWN0LmNvbnRyYWN0LkRlY2VudFBhc3NTbWFydENvbnRyYWN0LmFzc2lnbl92YWxpZGF0b3IodmFsaWRhdG9yOiBieXRlcywgc3Rha2VfYW1vdW50OiB1aW50NjQpIC0+IHZvaWQ6CmFzc2lnbl92YWxpZGF0b3I6CiAgICBwcm90byAyIDAKICAgIGZyYW1lX2RpZyAtMQogICAgaW50Y18yIC8vIDEwMDAKICAgID49CiAgICBhc3NlcnQgLy8gTWluaW11bSBzdGFrZSBvZiAxMDAwIHRva2VucyByZXF1aXJlZAogICAgYnl0ZWNfMSAvLyAic3Rha2VfIgogICAgZnJhbWVfZGlnIC0yCiAgICBjb25jYXQKICAgIGZyYW1lX2RpZyAtMQogICAgaXRvYgogICAgYm94X3B1dAogICAgcmV0c3ViCgoKLy8gc21hcnRfY29udHJhY3RzLmRlY2VudF9wYXNzX3NtYXJ0Y29udHJhY3QuY29udHJhY3QuRGVjZW50UGFzc1NtYXJ0Q29udHJhY3QudmVyaWZ5X3VzZXIodXNlcl9pZDogdWludDY0LCB2YWxpZGF0b3I6IGJ5dGVzKSAtPiB2b2lkOgp2ZXJpZnlfdXNlcjoKICAgIHByb3RvIDIgMAogICAgZnJhbWVfZGlnIC0yCiAgICBpdG9iCiAgICBieXRlY18wIC8vICJ1c2VyXyIKICAgIGRpZyAxCiAgICBjb25jYXQKICAgIGJveF9nZXQKICAgIGFzc2VydCAvLyBjaGVjayBzZWxmLnVzZXJfcHJvZmlsZXMgZW50cnkgZXhpc3RzCiAgICBsZW4KICAgIGFzc2VydCAvLyBVc2VyIHByb2ZpbGUgbm90IGZvdW5kCiAgICBieXRlY18xIC8vICJzdGFrZV8iCiAgICBmcmFtZV9kaWcgLTEKICAgIGNvbmNhdAogICAgYm94X2dldAogICAgc3dhcAogICAgYnRvaQogICAgc3dhcAogICAgYXNzZXJ0IC8vIGNoZWNrIHNlbGYudmFsaWRhdG9yX3N0YWtlcyBlbnRyeSBleGlzdHMKICAgIGludGNfMiAvLyAxMDAwCiAgICA+PQogICAgYXNzZXJ0IC8vIFZhbGlkYXRvciBzdGFrZSB0b28gbG93CiAgICBieXRlY18yIC8vICJ2ZXJpZnlfIgogICAgZGlnIDEKICAgIGNvbmNhdAogICAgaW50Y18wIC8vIDEKICAgIGl0b2IKICAgIGJveF9wdXQKICAgIHB1c2hieXRlcyAibGFzdF9wcm9maWxlIgogICAgc3dhcAogICAgYm94X3B1dAogICAgZnJhbWVfZGlnIC0xCiAgICBwdXNoaW50IDEwMCAvLyAxMDAKICAgIGNhbGxzdWIgYWRqdXN0X3ZhbGlkYXRvcl9yZXdhcmQKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5kZWNlbnRfcGFzc19zbWFydGNvbnRyYWN0LmNvbnRyYWN0LkRlY2VudFBhc3NTbWFydENvbnRyYWN0LmFkanVzdF92YWxpZGF0b3JfcmV3YXJkKHZhbGlkYXRvcjogYnl0ZXMsIHJld2FyZF9hbW91bnQ6IHVpbnQ2NCkgLT4gdm9pZDoKYWRqdXN0X3ZhbGlkYXRvcl9yZXdhcmQ6CiAgICBwcm90byAyIDAKICAgIGJ5dGVjXzMgLy8gInJld2FyZF8iCiAgICBmcmFtZV9kaWcgLTIKICAgIGNvbmNhdAogICAgZHVwCiAgICBib3hfZ2V0CiAgICBzd2FwCiAgICBidG9pCiAgICBpbnRjXzEgLy8gMAogICAgc3dhcAogICAgdW5jb3ZlciAyCiAgICBzZWxlY3QKICAgIGZyYW1lX2RpZyAtMQogICAgKwogICAgaXRvYgogICAgYm94X3B1dAogICAgcmV0c3ViCgoKLy8gc21hcnRfY29udHJhY3RzLmRlY2VudF9wYXNzX3NtYXJ0Y29udHJhY3QuY29udHJhY3QuRGVjZW50UGFzc1NtYXJ0Q29udHJhY3QuY2xhaW1fc3Rha2UodmFsaWRhdG9yOiBieXRlcykgLT4gdm9pZDoKY2xhaW1fc3Rha2U6CiAgICBwcm90byAxIDAKICAgIGJ5dGVjXzEgLy8gInN0YWtlXyIKICAgIGZyYW1lX2RpZyAtMQogICAgY29uY2F0CiAgICBkdXAKICAgIGJveF9nZXQKICAgIHN3YXAKICAgIGJ0b2kKICAgIGludGNfMSAvLyAwCiAgICBzd2FwCiAgICB1bmNvdmVyIDIKICAgIHNlbGVjdAogICAgYnl0ZWNfMyAvLyAicmV3YXJkXyIKICAgIGZyYW1lX2RpZyAtMQogICAgY29uY2F0CiAgICBkdXAKICAgIGJveF9nZXQKICAgIHN3YXAKICAgIGJ0b2kKICAgIGludGNfMSAvLyAwCiAgICBzd2FwCiAgICB1bmNvdmVyIDIKICAgIHNlbGVjdAogICAgYnl0ZWMgNCAvLyAicGVuYWx0eV8iCiAgICBmcmFtZV9kaWcgLTEKICAgIGNvbmNhdAogICAgZHVwCiAgICBib3hfZ2V0CiAgICBzd2FwCiAgICBidG9pCiAgICBpbnRjXzEgLy8gMAogICAgc3dhcAogICAgdW5jb3ZlciAyCiAgICBzZWxlY3QKICAgIHVuY292ZXIgNAogICAgdW5jb3ZlciAzCiAgICArCiAgICBzd2FwCiAgICAtCiAgICBkdXAKICAgIGFzc2VydCAvLyBObyBjbGFpbWFibGUgYW1vdW50IGF2YWlsYWJsZQogICAgaXR4bl9iZWdpbgogICAgaXR4bl9maWVsZCBBbW91bnQKICAgIGZyYW1lX2RpZyAtMQogICAgaXR4bl9maWVsZCBSZWNlaXZlcgogICAgaW50Y18wIC8vIHBheQogICAgaXR4bl9maWVsZCBUeXBlRW51bQogICAgaW50Y18xIC8vIDAKICAgIGl0eG5fZmllbGQgRmVlCiAgICBpdHhuX3N1Ym1pdAogICAgdW5jb3ZlciAyCiAgICBib3hfZGVsCiAgICBwb3AKICAgIHN3YXAKICAgIGJveF9kZWwKICAgIHBvcAogICAgYm94X2RlbAogICAgcG9wCiAgICByZXRzdWIKCgovLyBzbWFydF9jb250cmFjdHMuZGVjZW50X3Bhc3Nfc21hcnRjb250cmFjdC5jb250cmFjdC5EZWNlbnRQYXNzU21hcnRDb250cmFjdC5yZXRyaWV2ZV9wcm9maWxlKHVzZXJfaWQ6IHVpbnQ2NCkgLT4gYnl0ZXM6CnJldHJpZXZlX3Byb2ZpbGU6CiAgICBwcm90byAxIDEKICAgIGZyYW1lX2RpZyAtMQogICAgaXRvYgogICAgYnl0ZWNfMCAvLyAidXNlcl8iCiAgICBzd2FwCiAgICBjb25jYXQKICAgIGJveF9nZXQKICAgIHB1c2hieXRlcyAiUHJvZmlsZSBub3QgZm91bmQiCiAgICBjb3ZlciAyCiAgICBzZWxlY3QKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5kZWNlbnRfcGFzc19zbWFydGNvbnRyYWN0LmNvbnRyYWN0LkRlY2VudFBhc3NTbWFydENvbnRyYWN0LnBlbmFsdHlfdmFsaWRhdG9yKHZhbGlkYXRvcjogYnl0ZXMsIHBlbmFsdHlfYW1vdW50OiB1aW50NjQpIC0+IHZvaWQ6CnBlbmFsdHlfdmFsaWRhdG9yOgogICAgcHJvdG8gMiAwCiAgICBieXRlYyA0IC8vICJwZW5hbHR5XyIKICAgIGZyYW1lX2RpZyAtMgogICAgY29uY2F0CiAgICBkdXAKICAgIGJveF9nZXQKICAgIHN3YXAKICAgIGJ0b2kKICAgIGludGNfMSAvLyAwCiAgICBzd2FwCiAgICB1bmNvdmVyIDIKICAgIHNlbGVjdAogICAgZnJhbWVfZGlnIC0xCiAgICArCiAgICBpdG9iCiAgICBib3hfcHV0CiAgICByZXRzdWIK",
+    "clear": "I3ByYWdtYSB2ZXJzaW9uIDEwCgpzbWFydF9jb250cmFjdHMuZGVjZW50X3Bhc3Nfc21hcnRjb250cmFjdC5jb250cmFjdC5EZWNlbnRQYXNzU21hcnRDb250cmFjdC5jbGVhcl9zdGF0ZV9wcm9ncmFtOgogICAgcHVzaGludCAxIC8vIDEKICAgIHJldHVybgo="
   },
   "state": {
     "global": {
@@ -62,20 +92,125 @@ export const APP_SPEC: AppSpec = {
     }
   },
   "contract": {
-    "name": "DecentPassSmartcontract",
+    "name": "DecentPassSmartContract",
     "methods": [
       {
-        "name": "hello",
+        "name": "register_user",
         "args": [
           {
+            "type": "uint64",
+            "name": "user_id"
+          },
+          {
             "type": "string",
-            "name": "name"
+            "name": "profile_data"
+          }
+        ],
+        "readonly": false,
+        "returns": {
+          "type": "void"
+        },
+        "desc": "Registers a user profile by storing their user ID and profile data in a BoxMap."
+      },
+      {
+        "name": "assign_validator",
+        "args": [
+          {
+            "type": "account",
+            "name": "validator"
+          },
+          {
+            "type": "uint64",
+            "name": "stake_amount"
+          }
+        ],
+        "readonly": false,
+        "returns": {
+          "type": "void"
+        },
+        "desc": "Allows a validator to stake tokens and participate in the verification process."
+      },
+      {
+        "name": "verify_user",
+        "args": [
+          {
+            "type": "uint64",
+            "name": "user_id"
+          },
+          {
+            "type": "account",
+            "name": "validator"
+          }
+        ],
+        "readonly": false,
+        "returns": {
+          "type": "void"
+        },
+        "desc": "Allows a validator to verify a user profile. Increases the validator's rewards or penalties\nbased on the accuracy of verification, to be handled later."
+      },
+      {
+        "name": "claim_stake",
+        "args": [
+          {
+            "type": "account",
+            "name": "validator"
+          }
+        ],
+        "readonly": false,
+        "returns": {
+          "type": "void"
+        },
+        "desc": "Allows a validator to claim their stake along with accumulated rewards minus penalties."
+      },
+      {
+        "name": "retrieve_profile",
+        "args": [
+          {
+            "type": "uint64",
+            "name": "user_id"
           }
         ],
         "readonly": false,
         "returns": {
           "type": "string"
-        }
+        },
+        "desc": "Returns the profile data for a given user ID, allowing validators to view profiles."
+      },
+      {
+        "name": "penalty_validator",
+        "args": [
+          {
+            "type": "account",
+            "name": "validator"
+          },
+          {
+            "type": "uint64",
+            "name": "penalty_amount"
+          }
+        ],
+        "readonly": false,
+        "returns": {
+          "type": "void"
+        },
+        "desc": "Imposes a penalty on a validator for inaccurate verification."
+      },
+      {
+        "name": "adjust_validator_reward",
+        "args": [
+          {
+            "type": "account",
+            "name": "validator"
+          },
+          {
+            "type": "uint64",
+            "name": "reward_amount"
+          }
+        ],
+        "readonly": false,
+        "returns": {
+          "type": "void"
+        },
+        "desc": "Increases a validator's reward by the specified reward amount."
       }
     ],
     "networks": {}
@@ -148,29 +283,76 @@ export type IncludeSchema = {
 }
 
 /**
- * Defines the types of available calls and state of the DecentPassSmartcontract smart contract.
+ * Defines the types of available calls and state of the DecentPassSmartContract smart contract.
  */
-export type DecentPassSmartcontract = {
+export type DecentPassSmartContract = {
   /**
    * Maps method signatures / names to their argument and return types.
    */
   methods:
-    & Record<'hello(string)string' | 'hello', {
+    & Record<'register_user(uint64,string)void' | 'register_user', {
       argsObj: {
-        name: string
+        userId: bigint | number
+        profileData: string
       }
-      argsTuple: [name: string]
+      argsTuple: [userId: bigint | number, profileData: string]
+      returns: void
+    }>
+    & Record<'assign_validator(account,uint64)void' | 'assign_validator', {
+      argsObj: {
+        validator: string | Uint8Array
+        stakeAmount: bigint | number
+      }
+      argsTuple: [validator: string | Uint8Array, stakeAmount: bigint | number]
+      returns: void
+    }>
+    & Record<'verify_user(uint64,account)void' | 'verify_user', {
+      argsObj: {
+        userId: bigint | number
+        validator: string | Uint8Array
+      }
+      argsTuple: [userId: bigint | number, validator: string | Uint8Array]
+      returns: void
+    }>
+    & Record<'claim_stake(account)void' | 'claim_stake', {
+      argsObj: {
+        validator: string | Uint8Array
+      }
+      argsTuple: [validator: string | Uint8Array]
+      returns: void
+    }>
+    & Record<'retrieve_profile(uint64)string' | 'retrieve_profile', {
+      argsObj: {
+        userId: bigint | number
+      }
+      argsTuple: [userId: bigint | number]
       returns: string
+    }>
+    & Record<'penalty_validator(account,uint64)void' | 'penalty_validator', {
+      argsObj: {
+        validator: string | Uint8Array
+        penaltyAmount: bigint | number
+      }
+      argsTuple: [validator: string | Uint8Array, penaltyAmount: bigint | number]
+      returns: void
+    }>
+    & Record<'adjust_validator_reward(account,uint64)void' | 'adjust_validator_reward', {
+      argsObj: {
+        validator: string | Uint8Array
+        rewardAmount: bigint | number
+      }
+      argsTuple: [validator: string | Uint8Array, rewardAmount: bigint | number]
+      returns: void
     }>
 }
 /**
  * Defines the possible abi call signatures
  */
-export type DecentPassSmartcontractSig = keyof DecentPassSmartcontract['methods']
+export type DecentPassSmartContractSig = keyof DecentPassSmartContract['methods']
 /**
  * Defines an object containing all relevant parameters for a single call to the contract. Where TSignature is undefined, a bare call is made
  */
-export type TypedCallParams<TSignature extends DecentPassSmartcontractSig | undefined> = {
+export type TypedCallParams<TSignature extends DecentPassSmartContractSig | undefined> = {
   method: TSignature
   methodArgs: TSignature extends undefined ? undefined : Array<ABIAppCallArg | undefined>
 } & AppClientCallCoreParams & CoreAppCallArgs
@@ -179,46 +361,46 @@ export type TypedCallParams<TSignature extends DecentPassSmartcontractSig | unde
  */
 export type BareCallArgs = Omit<RawAppCallArgs, keyof CoreAppCallArgs>
 /**
- * Maps a method signature from the DecentPassSmartcontract smart contract to the method's arguments in either tuple of struct form
+ * Maps a method signature from the DecentPassSmartContract smart contract to the method's arguments in either tuple of struct form
  */
-export type MethodArgs<TSignature extends DecentPassSmartcontractSig> = DecentPassSmartcontract['methods'][TSignature]['argsObj' | 'argsTuple']
+export type MethodArgs<TSignature extends DecentPassSmartContractSig> = DecentPassSmartContract['methods'][TSignature]['argsObj' | 'argsTuple']
 /**
- * Maps a method signature from the DecentPassSmartcontract smart contract to the method's return type
+ * Maps a method signature from the DecentPassSmartContract smart contract to the method's return type
  */
-export type MethodReturn<TSignature extends DecentPassSmartcontractSig> = DecentPassSmartcontract['methods'][TSignature]['returns']
+export type MethodReturn<TSignature extends DecentPassSmartContractSig> = DecentPassSmartContract['methods'][TSignature]['returns']
 
 /**
  * A factory for available 'create' calls
  */
-export type DecentPassSmartcontractCreateCalls = (typeof DecentPassSmartcontractCallFactory)['create']
+export type DecentPassSmartContractCreateCalls = (typeof DecentPassSmartContractCallFactory)['create']
 /**
  * Defines supported create methods for this smart contract
  */
-export type DecentPassSmartcontractCreateCallParams =
+export type DecentPassSmartContractCreateCallParams =
   | (TypedCallParams<undefined> & (OnCompleteNoOp))
 /**
  * Defines arguments required for the deploy method.
  */
-export type DecentPassSmartcontractDeployArgs = {
+export type DecentPassSmartContractDeployArgs = {
   deployTimeParams?: TealTemplateParams
   /**
    * A delegate which takes a create call factory and returns the create call params for this smart contract
    */
-  createCall?: (callFactory: DecentPassSmartcontractCreateCalls) => DecentPassSmartcontractCreateCallParams
+  createCall?: (callFactory: DecentPassSmartContractCreateCalls) => DecentPassSmartContractCreateCallParams
 }
 
 
 /**
  * Exposes methods for constructing all available smart contract calls
  */
-export abstract class DecentPassSmartcontractCallFactory {
+export abstract class DecentPassSmartContractCallFactory {
   /**
    * Gets available create call factories
    */
   static get create() {
     return {
       /**
-       * Constructs a create call for the DecentPassSmartcontract smart contract using a bare call
+       * Constructs a create call for the DecentPassSmartContract smart contract using a bare call
        *
        * @param params Any parameters for the call
        * @returns A TypedCallParams object for the call
@@ -234,25 +416,124 @@ export abstract class DecentPassSmartcontractCallFactory {
   }
 
   /**
-   * Constructs a no op call for the hello(string)string ABI method
+   * Constructs a no op call for the register_user(uint64,string)void ABI method
+   *
+   * Registers a user profile by storing their user ID and profile data in a BoxMap.
    *
    * @param args Any args for the contract call
    * @param params Any additional parameters for the call
    * @returns A TypedCallParams object for the call
    */
-  static hello(args: MethodArgs<'hello(string)string'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+  static registerUser(args: MethodArgs<'register_user(uint64,string)void'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
     return {
-      method: 'hello(string)string' as const,
-      methodArgs: Array.isArray(args) ? args : [args.name],
+      method: 'register_user(uint64,string)void' as const,
+      methodArgs: Array.isArray(args) ? args : [args.userId, args.profileData],
+      ...params,
+    }
+  }
+  /**
+   * Constructs a no op call for the assign_validator(account,uint64)void ABI method
+   *
+   * Allows a validator to stake tokens and participate in the verification process.
+   *
+   * @param args Any args for the contract call
+   * @param params Any additional parameters for the call
+   * @returns A TypedCallParams object for the call
+   */
+  static assignValidator(args: MethodArgs<'assign_validator(account,uint64)void'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+    return {
+      method: 'assign_validator(account,uint64)void' as const,
+      methodArgs: Array.isArray(args) ? args : [args.validator, args.stakeAmount],
+      ...params,
+    }
+  }
+  /**
+   * Constructs a no op call for the verify_user(uint64,account)void ABI method
+   *
+   * Allows a validator to verify a user profile. Increases the validator's rewards or penalties
+based on the accuracy of verification, to be handled later.
+   *
+   * @param args Any args for the contract call
+   * @param params Any additional parameters for the call
+   * @returns A TypedCallParams object for the call
+   */
+  static verifyUser(args: MethodArgs<'verify_user(uint64,account)void'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+    return {
+      method: 'verify_user(uint64,account)void' as const,
+      methodArgs: Array.isArray(args) ? args : [args.userId, args.validator],
+      ...params,
+    }
+  }
+  /**
+   * Constructs a no op call for the claim_stake(account)void ABI method
+   *
+   * Allows a validator to claim their stake along with accumulated rewards minus penalties.
+   *
+   * @param args Any args for the contract call
+   * @param params Any additional parameters for the call
+   * @returns A TypedCallParams object for the call
+   */
+  static claimStake(args: MethodArgs<'claim_stake(account)void'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+    return {
+      method: 'claim_stake(account)void' as const,
+      methodArgs: Array.isArray(args) ? args : [args.validator],
+      ...params,
+    }
+  }
+  /**
+   * Constructs a no op call for the retrieve_profile(uint64)string ABI method
+   *
+   * Returns the profile data for a given user ID, allowing validators to view profiles.
+   *
+   * @param args Any args for the contract call
+   * @param params Any additional parameters for the call
+   * @returns A TypedCallParams object for the call
+   */
+  static retrieveProfile(args: MethodArgs<'retrieve_profile(uint64)string'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+    return {
+      method: 'retrieve_profile(uint64)string' as const,
+      methodArgs: Array.isArray(args) ? args : [args.userId],
+      ...params,
+    }
+  }
+  /**
+   * Constructs a no op call for the penalty_validator(account,uint64)void ABI method
+   *
+   * Imposes a penalty on a validator for inaccurate verification.
+   *
+   * @param args Any args for the contract call
+   * @param params Any additional parameters for the call
+   * @returns A TypedCallParams object for the call
+   */
+  static penaltyValidator(args: MethodArgs<'penalty_validator(account,uint64)void'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+    return {
+      method: 'penalty_validator(account,uint64)void' as const,
+      methodArgs: Array.isArray(args) ? args : [args.validator, args.penaltyAmount],
+      ...params,
+    }
+  }
+  /**
+   * Constructs a no op call for the adjust_validator_reward(account,uint64)void ABI method
+   *
+   * Increases a validator's reward by the specified reward amount.
+   *
+   * @param args Any args for the contract call
+   * @param params Any additional parameters for the call
+   * @returns A TypedCallParams object for the call
+   */
+  static adjustValidatorReward(args: MethodArgs<'adjust_validator_reward(account,uint64)void'>, params: AppClientCallCoreParams & CoreAppCallArgs) {
+    return {
+      method: 'adjust_validator_reward(account,uint64)void' as const,
+      methodArgs: Array.isArray(args) ? args : [args.validator, args.rewardAmount],
       ...params,
     }
   }
 }
 
 /**
- * A client to make calls to the DecentPassSmartcontract smart contract
+ * A client to make calls to the DecentPassSmartContract smart contract
  */
-export class DecentPassSmartcontractClient {
+export class DecentPassSmartContractClient {
   /**
    * The underlying `ApplicationClient` for when you want to have more flexibility
    */
@@ -261,7 +542,7 @@ export class DecentPassSmartcontractClient {
   private readonly sender: SendTransactionFrom | undefined
 
   /**
-   * Creates a new instance of `DecentPassSmartcontractClient`
+   * Creates a new instance of `DecentPassSmartContractClient`
    *
    * @param appDetails appDetails The details to identify the app to deploy
    * @param algod An algod client instance
@@ -298,18 +579,18 @@ export class DecentPassSmartcontractClient {
    * @param returnValueFormatter An optional delegate which when provided will be used to map non-undefined return values to the target type
    * @returns The result of the smart contract call
    */
-  public async call<TSignature extends keyof DecentPassSmartcontract['methods']>(typedCallParams: TypedCallParams<TSignature>, returnValueFormatter?: (value: any) => MethodReturn<TSignature>) {
+  public async call<TSignature extends keyof DecentPassSmartContract['methods']>(typedCallParams: TypedCallParams<TSignature>, returnValueFormatter?: (value: any) => MethodReturn<TSignature>) {
     return this.mapReturnValue<MethodReturn<TSignature>>(await this.appClient.call(typedCallParams), returnValueFormatter)
   }
 
   /**
-   * Idempotently deploys the DecentPassSmartcontract smart contract.
+   * Idempotently deploys the DecentPassSmartContract smart contract.
    *
    * @param params The arguments for the contract calls and any additional parameters for the call
    * @returns The deployment result
    */
-  public deploy(params: DecentPassSmartcontractDeployArgs & AppClientDeployCoreParams & IncludeSchema = {}): ReturnType<ApplicationClient['deploy']> {
-    const createArgs = params.createCall?.(DecentPassSmartcontractCallFactory.create)
+  public deploy(params: DecentPassSmartContractDeployArgs & AppClientDeployCoreParams & IncludeSchema = {}): ReturnType<ApplicationClient['deploy']> {
+    const createArgs = params.createCall?.(DecentPassSmartContractCallFactory.create)
     return this.appClient.deploy({
       ...params,
       createArgs,
@@ -324,7 +605,7 @@ export class DecentPassSmartcontractClient {
     const $this = this
     return {
       /**
-       * Creates a new instance of the DecentPassSmartcontract smart contract using a bare call.
+       * Creates a new instance of the DecentPassSmartContract smart contract using a bare call.
        *
        * @param args The arguments for the bare call
        * @returns The create result
@@ -336,7 +617,7 @@ export class DecentPassSmartcontractClient {
   }
 
   /**
-   * Makes a clear_state call to an existing instance of the DecentPassSmartcontract smart contract.
+   * Makes a clear_state call to an existing instance of the DecentPassSmartContract smart contract.
    *
    * @param args The arguments for the bare call
    * @returns The clear_state result
@@ -346,24 +627,135 @@ export class DecentPassSmartcontractClient {
   }
 
   /**
-   * Calls the hello(string)string ABI method.
+   * Calls the register_user(uint64,string)void ABI method.
+   *
+   * Registers a user profile by storing their user ID and profile data in a BoxMap.
    *
    * @param args The arguments for the contract call
    * @param params Any additional parameters for the call
    * @returns The result of the call
    */
-  public hello(args: MethodArgs<'hello(string)string'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
-    return this.call(DecentPassSmartcontractCallFactory.hello(args, params))
+  public registerUser(args: MethodArgs<'register_user(uint64,string)void'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(DecentPassSmartContractCallFactory.registerUser(args, params))
   }
 
-  public compose(): DecentPassSmartcontractComposer {
+  /**
+   * Calls the assign_validator(account,uint64)void ABI method.
+   *
+   * Allows a validator to stake tokens and participate in the verification process.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The result of the call
+   */
+  public assignValidator(args: MethodArgs<'assign_validator(account,uint64)void'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(DecentPassSmartContractCallFactory.assignValidator(args, params))
+  }
+
+  /**
+   * Calls the verify_user(uint64,account)void ABI method.
+   *
+   * Allows a validator to verify a user profile. Increases the validator's rewards or penalties
+based on the accuracy of verification, to be handled later.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The result of the call
+   */
+  public verifyUser(args: MethodArgs<'verify_user(uint64,account)void'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(DecentPassSmartContractCallFactory.verifyUser(args, params))
+  }
+
+  /**
+   * Calls the claim_stake(account)void ABI method.
+   *
+   * Allows a validator to claim their stake along with accumulated rewards minus penalties.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The result of the call
+   */
+  public claimStake(args: MethodArgs<'claim_stake(account)void'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(DecentPassSmartContractCallFactory.claimStake(args, params))
+  }
+
+  /**
+   * Calls the retrieve_profile(uint64)string ABI method.
+   *
+   * Returns the profile data for a given user ID, allowing validators to view profiles.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The result of the call
+   */
+  public retrieveProfile(args: MethodArgs<'retrieve_profile(uint64)string'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(DecentPassSmartContractCallFactory.retrieveProfile(args, params))
+  }
+
+  /**
+   * Calls the penalty_validator(account,uint64)void ABI method.
+   *
+   * Imposes a penalty on a validator for inaccurate verification.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The result of the call
+   */
+  public penaltyValidator(args: MethodArgs<'penalty_validator(account,uint64)void'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(DecentPassSmartContractCallFactory.penaltyValidator(args, params))
+  }
+
+  /**
+   * Calls the adjust_validator_reward(account,uint64)void ABI method.
+   *
+   * Increases a validator's reward by the specified reward amount.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The result of the call
+   */
+  public adjustValidatorReward(args: MethodArgs<'adjust_validator_reward(account,uint64)void'>, params: AppClientCallCoreParams & CoreAppCallArgs = {}) {
+    return this.call(DecentPassSmartContractCallFactory.adjustValidatorReward(args, params))
+  }
+
+  public compose(): DecentPassSmartContractComposer {
     const client = this
     const atc = new AtomicTransactionComposer()
     let promiseChain:Promise<unknown> = Promise.resolve()
     const resultMappers: Array<undefined | ((x: any) => any)> = []
     return {
-      hello(args: MethodArgs<'hello(string)string'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
-        promiseChain = promiseChain.then(() => client.hello(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+      registerUser(args: MethodArgs<'register_user(uint64,string)void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.registerUser(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+        resultMappers.push(undefined)
+        return this
+      },
+      assignValidator(args: MethodArgs<'assign_validator(account,uint64)void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.assignValidator(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+        resultMappers.push(undefined)
+        return this
+      },
+      verifyUser(args: MethodArgs<'verify_user(uint64,account)void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.verifyUser(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+        resultMappers.push(undefined)
+        return this
+      },
+      claimStake(args: MethodArgs<'claim_stake(account)void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.claimStake(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+        resultMappers.push(undefined)
+        return this
+      },
+      retrieveProfile(args: MethodArgs<'retrieve_profile(uint64)string'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.retrieveProfile(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+        resultMappers.push(undefined)
+        return this
+      },
+      penaltyValidator(args: MethodArgs<'penalty_validator(account,uint64)void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.penaltyValidator(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
+        resultMappers.push(undefined)
+        return this
+      },
+      adjustValidatorReward(args: MethodArgs<'adjust_validator_reward(account,uint64)void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs) {
+        promiseChain = promiseChain.then(() => client.adjustValidatorReward(args, {...params, sendParams: {...params?.sendParams, skipSending: true, atc}}))
         resultMappers.push(undefined)
         return this
       },
@@ -396,26 +788,95 @@ export class DecentPassSmartcontractClient {
           returns: result.returns?.map((val, i) => resultMappers[i] !== undefined ? resultMappers[i]!(val.returnValue) : val.returnValue)
         }
       }
-    } as unknown as DecentPassSmartcontractComposer
+    } as unknown as DecentPassSmartContractComposer
   }
 }
-export type DecentPassSmartcontractComposer<TReturns extends [...any[]] = []> = {
+export type DecentPassSmartContractComposer<TReturns extends [...any[]] = []> = {
   /**
-   * Calls the hello(string)string ABI method.
+   * Calls the register_user(uint64,string)void ABI method.
+   *
+   * Registers a user profile by storing their user ID and profile data in a BoxMap.
    *
    * @param args The arguments for the contract call
    * @param params Any additional parameters for the call
    * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
    */
-  hello(args: MethodArgs<'hello(string)string'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): DecentPassSmartcontractComposer<[...TReturns, MethodReturn<'hello(string)string'>]>
+  registerUser(args: MethodArgs<'register_user(uint64,string)void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): DecentPassSmartContractComposer<[...TReturns, MethodReturn<'register_user(uint64,string)void'>]>
 
   /**
-   * Makes a clear_state call to an existing instance of the DecentPassSmartcontract smart contract.
+   * Calls the assign_validator(account,uint64)void ABI method.
+   *
+   * Allows a validator to stake tokens and participate in the verification process.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  assignValidator(args: MethodArgs<'assign_validator(account,uint64)void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): DecentPassSmartContractComposer<[...TReturns, MethodReturn<'assign_validator(account,uint64)void'>]>
+
+  /**
+   * Calls the verify_user(uint64,account)void ABI method.
+   *
+   * Allows a validator to verify a user profile. Increases the validator's rewards or penalties
+based on the accuracy of verification, to be handled later.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  verifyUser(args: MethodArgs<'verify_user(uint64,account)void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): DecentPassSmartContractComposer<[...TReturns, MethodReturn<'verify_user(uint64,account)void'>]>
+
+  /**
+   * Calls the claim_stake(account)void ABI method.
+   *
+   * Allows a validator to claim their stake along with accumulated rewards minus penalties.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  claimStake(args: MethodArgs<'claim_stake(account)void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): DecentPassSmartContractComposer<[...TReturns, MethodReturn<'claim_stake(account)void'>]>
+
+  /**
+   * Calls the retrieve_profile(uint64)string ABI method.
+   *
+   * Returns the profile data for a given user ID, allowing validators to view profiles.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  retrieveProfile(args: MethodArgs<'retrieve_profile(uint64)string'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): DecentPassSmartContractComposer<[...TReturns, MethodReturn<'retrieve_profile(uint64)string'>]>
+
+  /**
+   * Calls the penalty_validator(account,uint64)void ABI method.
+   *
+   * Imposes a penalty on a validator for inaccurate verification.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  penaltyValidator(args: MethodArgs<'penalty_validator(account,uint64)void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): DecentPassSmartContractComposer<[...TReturns, MethodReturn<'penalty_validator(account,uint64)void'>]>
+
+  /**
+   * Calls the adjust_validator_reward(account,uint64)void ABI method.
+   *
+   * Increases a validator's reward by the specified reward amount.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  adjustValidatorReward(args: MethodArgs<'adjust_validator_reward(account,uint64)void'>, params?: AppClientComposeCallCoreParams & CoreAppCallArgs): DecentPassSmartContractComposer<[...TReturns, MethodReturn<'adjust_validator_reward(account,uint64)void'>]>
+
+  /**
+   * Makes a clear_state call to an existing instance of the DecentPassSmartContract smart contract.
    *
    * @param args The arguments for the bare call
    * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
    */
-  clearState(args?: BareCallArgs & AppClientComposeCallCoreParams & CoreAppCallArgs): DecentPassSmartcontractComposer<[...TReturns, undefined]>
+  clearState(args?: BareCallArgs & AppClientComposeCallCoreParams & CoreAppCallArgs): DecentPassSmartContractComposer<[...TReturns, undefined]>
 
   /**
    * Adds a transaction to the composer
@@ -423,7 +884,7 @@ export type DecentPassSmartcontractComposer<TReturns extends [...any[]] = []> = 
    * @param txn One of: A TransactionWithSigner object (returned as is), a TransactionToSign object (signer is obtained from the signer property), a Transaction object (signer is extracted from the defaultSender parameter), an async SendTransactionResult returned by one of algokit utils helpers (signer is obtained from the defaultSender parameter)
    * @param defaultSender The default sender to be used to obtain a signer where the object provided to the transaction parameter does not include a signer.
    */
-  addTransaction(txn: TransactionWithSigner | TransactionToSign | Transaction | Promise<SendTransactionResult>, defaultSender?: SendTransactionFrom): DecentPassSmartcontractComposer<TReturns>
+  addTransaction(txn: TransactionWithSigner | TransactionToSign | Transaction | Promise<SendTransactionResult>, defaultSender?: SendTransactionFrom): DecentPassSmartContractComposer<TReturns>
   /**
    * Returns the underlying AtomicTransactionComposer instance
    */
@@ -431,19 +892,19 @@ export type DecentPassSmartcontractComposer<TReturns extends [...any[]] = []> = 
   /**
    * Simulates the transaction group and returns the result
    */
-  simulate(options?: SimulateOptions): Promise<DecentPassSmartcontractComposerSimulateResult<TReturns>>
+  simulate(options?: SimulateOptions): Promise<DecentPassSmartContractComposerSimulateResult<TReturns>>
   /**
    * Executes the transaction group and returns the results
    */
-  execute(sendParams?: AppClientComposeExecuteParams): Promise<DecentPassSmartcontractComposerResults<TReturns>>
+  execute(sendParams?: AppClientComposeExecuteParams): Promise<DecentPassSmartContractComposerResults<TReturns>>
 }
 export type SimulateOptions = Omit<ConstructorParameters<typeof modelsv2.SimulateRequest>[0], 'txnGroups'>
-export type DecentPassSmartcontractComposerSimulateResult<TReturns extends [...any[]]> = {
+export type DecentPassSmartContractComposerSimulateResult<TReturns extends [...any[]]> = {
   returns: TReturns
   methodResults: ABIResult[]
   simulateResponse: modelsv2.SimulateResponse
 }
-export type DecentPassSmartcontractComposerResults<TReturns extends [...any[]]> = {
+export type DecentPassSmartContractComposerResults<TReturns extends [...any[]]> = {
   returns: TReturns
   groupId: string
   txIds: string[]

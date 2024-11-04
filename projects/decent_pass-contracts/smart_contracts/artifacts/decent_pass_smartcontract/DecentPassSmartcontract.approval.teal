@@ -1,31 +1,89 @@
 #pragma version 10
 
-smart_contracts.decent_pass_smartcontract.contract.DecentPassSmartcontract.approval_program:
-    intcblock 0 1
+smart_contracts.decent_pass_smartcontract.contract.DecentPassSmartContract.approval_program:
+    intcblock 1 0 1000
+    bytecblock "user_" "stake_" "verify_" "reward_" "penalty_"
     callsub __puya_arc4_router__
     return
 
 
-// smart_contracts.decent_pass_smartcontract.contract.DecentPassSmartcontract.__puya_arc4_router__() -> uint64:
+// smart_contracts.decent_pass_smartcontract.contract.DecentPassSmartContract.__puya_arc4_router__() -> uint64:
 __puya_arc4_router__:
     proto 0 1
     txn NumAppArgs
-    bz __puya_arc4_router___bare_routing@5
-    pushbytes 0x02bece11 // method "hello(string)string"
+    bz __puya_arc4_router___bare_routing@11
+    pushbytess 0x0c9abaa5 0x025536ca 0x08d10ae3 0x63ed7599 0xee26cf95 0x88ea5323 0x979e3ebb // method "register_user(uint64,string)void", method "assign_validator(account,uint64)void", method "verify_user(uint64,account)void", method "claim_stake(account)void", method "retrieve_profile(uint64)string", method "penalty_validator(account,uint64)void", method "adjust_validator_reward(account,uint64)void"
     txna ApplicationArgs 0
-    match __puya_arc4_router___hello_route@2
-    intc_0 // 0
+    match __puya_arc4_router___register_user_route@2 __puya_arc4_router___assign_validator_route@3 __puya_arc4_router___verify_user_route@4 __puya_arc4_router___claim_stake_route@5 __puya_arc4_router___retrieve_profile_route@6 __puya_arc4_router___penalty_validator_route@7 __puya_arc4_router___adjust_validator_reward_route@8
+    intc_1 // 0
     retsub
 
-__puya_arc4_router___hello_route@2:
+__puya_arc4_router___register_user_route@2:
     txn OnCompletion
     !
     assert // OnCompletion is NoOp
     txn ApplicationID
     assert // is not creating
     txna ApplicationArgs 1
+    btoi
+    txna ApplicationArgs 2
     extract 2 0
-    callsub hello
+    callsub register_user
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___assign_validator_route@3:
+    txn OnCompletion
+    !
+    assert // OnCompletion is NoOp
+    txn ApplicationID
+    assert // is not creating
+    txna ApplicationArgs 1
+    btoi
+    txnas Accounts
+    txna ApplicationArgs 2
+    btoi
+    callsub assign_validator
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___verify_user_route@4:
+    txn OnCompletion
+    !
+    assert // OnCompletion is NoOp
+    txn ApplicationID
+    assert // is not creating
+    txna ApplicationArgs 1
+    btoi
+    txna ApplicationArgs 2
+    btoi
+    txnas Accounts
+    callsub verify_user
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___claim_stake_route@5:
+    txn OnCompletion
+    !
+    assert // OnCompletion is NoOp
+    txn ApplicationID
+    assert // is not creating
+    txna ApplicationArgs 1
+    btoi
+    txnas Accounts
+    callsub claim_stake
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___retrieve_profile_route@6:
+    txn OnCompletion
+    !
+    assert // OnCompletion is NoOp
+    txn ApplicationID
+    assert // is not creating
+    txna ApplicationArgs 1
+    btoi
+    callsub retrieve_profile
     dup
     len
     itob
@@ -36,27 +94,244 @@ __puya_arc4_router___hello_route@2:
     swap
     concat
     log
-    intc_1 // 1
+    intc_0 // 1
     retsub
 
-__puya_arc4_router___bare_routing@5:
+__puya_arc4_router___penalty_validator_route@7:
     txn OnCompletion
-    bnz __puya_arc4_router___after_if_else@9
+    !
+    assert // OnCompletion is NoOp
+    txn ApplicationID
+    assert // is not creating
+    txna ApplicationArgs 1
+    btoi
+    txnas Accounts
+    txna ApplicationArgs 2
+    btoi
+    callsub penalty_validator
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___adjust_validator_reward_route@8:
+    txn OnCompletion
+    !
+    assert // OnCompletion is NoOp
+    txn ApplicationID
+    assert // is not creating
+    txna ApplicationArgs 1
+    btoi
+    txnas Accounts
+    txna ApplicationArgs 2
+    btoi
+    callsub adjust_validator_reward
+    intc_0 // 1
+    retsub
+
+__puya_arc4_router___bare_routing@11:
+    txn OnCompletion
+    bnz __puya_arc4_router___after_if_else@15
     txn ApplicationID
     !
     assert // is creating
-    intc_1 // 1
+    intc_0 // 1
     retsub
 
-__puya_arc4_router___after_if_else@9:
-    intc_0 // 0
+__puya_arc4_router___after_if_else@15:
+    intc_1 // 0
     retsub
 
 
-// smart_contracts.decent_pass_smartcontract.contract.DecentPassSmartcontract.hello(name: bytes) -> bytes:
-hello:
-    proto 1 1
-    pushbytes "Hello, "
+// smart_contracts.decent_pass_smartcontract.contract.DecentPassSmartContract.register_user(user_id: uint64, profile_data: bytes) -> void:
+register_user:
+    proto 2 0
+    frame_dig -2
+    itob
+    bytec_0 // "user_"
+    dig 1
+    concat
+    dup
+    box_del
+    pop
+    frame_dig -1
+    box_put
+    bytec_2 // "verify_"
+    swap
+    concat
+    intc_1 // 0
+    itob
+    box_put
+    retsub
+
+
+// smart_contracts.decent_pass_smartcontract.contract.DecentPassSmartContract.assign_validator(validator: bytes, stake_amount: uint64) -> void:
+assign_validator:
+    proto 2 0
+    frame_dig -1
+    intc_2 // 1000
+    >=
+    assert // Minimum stake of 1000 tokens required
+    bytec_1 // "stake_"
+    frame_dig -2
+    concat
+    frame_dig -1
+    itob
+    box_put
+    retsub
+
+
+// smart_contracts.decent_pass_smartcontract.contract.DecentPassSmartContract.verify_user(user_id: uint64, validator: bytes) -> void:
+verify_user:
+    proto 2 0
+    frame_dig -2
+    itob
+    bytec_0 // "user_"
+    dig 1
+    concat
+    box_get
+    assert // check self.user_profiles entry exists
+    len
+    assert // User profile not found
+    bytec_1 // "stake_"
     frame_dig -1
     concat
+    box_get
+    swap
+    btoi
+    swap
+    assert // check self.validator_stakes entry exists
+    intc_2 // 1000
+    >=
+    assert // Validator stake too low
+    bytec_2 // "verify_"
+    dig 1
+    concat
+    intc_0 // 1
+    itob
+    box_put
+    pushbytes "last_profile"
+    swap
+    box_put
+    frame_dig -1
+    pushint 100 // 100
+    callsub adjust_validator_reward
+    retsub
+
+
+// smart_contracts.decent_pass_smartcontract.contract.DecentPassSmartContract.adjust_validator_reward(validator: bytes, reward_amount: uint64) -> void:
+adjust_validator_reward:
+    proto 2 0
+    bytec_3 // "reward_"
+    frame_dig -2
+    concat
+    dup
+    box_get
+    swap
+    btoi
+    intc_1 // 0
+    swap
+    uncover 2
+    select
+    frame_dig -1
+    +
+    itob
+    box_put
+    retsub
+
+
+// smart_contracts.decent_pass_smartcontract.contract.DecentPassSmartContract.claim_stake(validator: bytes) -> void:
+claim_stake:
+    proto 1 0
+    bytec_1 // "stake_"
+    frame_dig -1
+    concat
+    dup
+    box_get
+    swap
+    btoi
+    intc_1 // 0
+    swap
+    uncover 2
+    select
+    bytec_3 // "reward_"
+    frame_dig -1
+    concat
+    dup
+    box_get
+    swap
+    btoi
+    intc_1 // 0
+    swap
+    uncover 2
+    select
+    bytec 4 // "penalty_"
+    frame_dig -1
+    concat
+    dup
+    box_get
+    swap
+    btoi
+    intc_1 // 0
+    swap
+    uncover 2
+    select
+    uncover 4
+    uncover 3
+    +
+    swap
+    -
+    dup
+    assert // No claimable amount available
+    itxn_begin
+    itxn_field Amount
+    frame_dig -1
+    itxn_field Receiver
+    intc_0 // pay
+    itxn_field TypeEnum
+    intc_1 // 0
+    itxn_field Fee
+    itxn_submit
+    uncover 2
+    box_del
+    pop
+    swap
+    box_del
+    pop
+    box_del
+    pop
+    retsub
+
+
+// smart_contracts.decent_pass_smartcontract.contract.DecentPassSmartContract.retrieve_profile(user_id: uint64) -> bytes:
+retrieve_profile:
+    proto 1 1
+    frame_dig -1
+    itob
+    bytec_0 // "user_"
+    swap
+    concat
+    box_get
+    pushbytes "Profile not found"
+    cover 2
+    select
+    retsub
+
+
+// smart_contracts.decent_pass_smartcontract.contract.DecentPassSmartContract.penalty_validator(validator: bytes, penalty_amount: uint64) -> void:
+penalty_validator:
+    proto 2 0
+    bytec 4 // "penalty_"
+    frame_dig -2
+    concat
+    dup
+    box_get
+    swap
+    btoi
+    intc_1 // 0
+    swap
+    uncover 2
+    select
+    frame_dig -1
+    +
+    itob
+    box_put
     retsub

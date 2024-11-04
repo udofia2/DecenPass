@@ -1,6 +1,16 @@
 import { Link } from "react-router-dom";
+import * as algokit from '@algorandfoundation/algokit-utils'
 
 import { Metadata } from "next";
+import { Provider, useWallet } from "@txnlab/use-wallet";
+import { register } from "../../components/Methods";
+import { useState } from "react";
+import { DecentPassSmartContractClient } from "../../contracts/DecentPassSmartcontract";
+import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from "../../utils/network/getAlgoClientConfigs";
+import { TransactionSignerAccount } from "@algorandfoundation/algokit-utils/types/account";
+import { AppDetails } from "@algorandfoundation/algokit-utils/types/app-client";
+import { enqueueSnackbar } from "notistack";
+
 
 export const metadata: Metadata = {
   title: "Sign Up Page | Free Next.js Template for Startup and SaaS",
@@ -9,6 +19,48 @@ export const metadata: Metadata = {
 };
 
 const SignupPage = () => {
+
+  const { signer, activeAddress } = useWallet()
+
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const indexerConfig = getIndexerConfigFromViteEnvironment()
+
+  const indexer = algokit.getAlgoIndexerClient({
+    server: indexerConfig.server,
+    port: indexerConfig.port,
+    token: indexerConfig.token,
+  })
+  const appDetails = {
+    resolveBy: 'creatorAndName',
+    sender: { signer, addr: activeAddress } as TransactionSignerAccount,
+    creatorAddress: activeAddress,
+    findExistingUsing: indexer,
+  } as AppDetails
+
+  
+  const algodConfig = getAlgodConfigFromViteEnvironment()
+
+  const algodClient = algokit.getAlgoClient({
+    server: algodConfig.server,
+    port: algodConfig.port,
+    token: algodConfig.token,
+  })
+
+
+  const isKmd = (provider: Provider) => provider.metadata.name.toLowerCase() === 'kmd'
+  const dPClient = new DecentPassSmartContractClient(appDetails, algodClient)
+
+  const callRegisterFn = async () => {
+    setLoading(true);
+    console.log("registering")
+    await dPClient.registerUser({userId: BigInt(1), profileData: "Joel"}).catch((e: Error) => {
+      enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
+      setLoading(false)
+      return
+    })
+    setLoading(false);
+  }
   return (
     <>
       <section className="relative z-10 overflow-hidden pb-16 pt-36 md:pb-20 lg:pb-28 lg:pt-[180px]">
@@ -80,7 +132,7 @@ const SignupPage = () => {
                   </p>
                   <span className="hidden h-[1px] w-full max-w-[60px] bg-body-color/50 sm:block"></span>
                 </div>
-                <form>
+                {/* <form> */}
                   <div className="mb-8">
                     <label
                       htmlFor="name"
@@ -171,11 +223,18 @@ const SignupPage = () => {
                     </label>
                   </div>
                   <div className="mb-6">
-                    <button className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300 hover:bg-primary/90">
+                    {loading ? (
+                      
+                    <button onClick={() => callRegisterFn()} className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300 hover:bg-primary/90">
+                      ...
+                    </button>
+                    ) : (
+                    <button onClick={() => callRegisterFn()} className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300 hover:bg-primary/90">
                       Sign up
                     </button>
+                    )}
                   </div>
-                </form>
+                {/* </form> */}
                 <p className="text-center text-base font-medium text-body-color">
                   Already using Startup?{" "}
                   <Link to="/signin" className="text-primary hover:underline">

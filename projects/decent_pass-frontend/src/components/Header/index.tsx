@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import ThemeToggler from "./ThemeToggler";
 import menuData from "./menuData";
 import logo from "../../assets/images/logo/logo-2.svg";
 import logoDark from "../../assets/images/logo/logo.svg";
-
+import { Provider, useWallet } from "@txnlab/use-wallet";
+import { getAlgodConfigFromViteEnvironment } from "../../utils/network/getAlgoClientConfigs";
+import { ellipseAddress } from "../../utils/ellipseAddress";
 
 const Header = () => {
   // Navbar toggle
@@ -15,6 +17,16 @@ const Header = () => {
   const location = useLocation();
   const currentPath = location.pathname;
 
+  const [openWalletModal, setOpenWalletModal] = useState<boolean>(false)
+  
+  const { providers, activeAddress } = useWallet();
+
+  const isKmd = (provider: Provider) => provider.metadata.name.toLowerCase() === "kmd";
+  const algoConfig = getAlgodConfigFromViteEnvironment();
+
+  const networkName = useMemo(() => {
+    return algoConfig.network === "" ? "localnet" : algoConfig.network.toLocaleLowerCase();
+  }, [algoConfig.network]);
 
   // Sticky Navbar
   const [sticky, setSticky] = useState(false);
@@ -38,7 +50,10 @@ const Header = () => {
       setOpenIndex(index);
     }
   };
- 
+
+  const toggleWalletModal = () => {
+    setOpenWalletModal(!openWalletModal)
+  }
 
   return (
     <>
@@ -52,26 +67,9 @@ const Header = () => {
         <div className="container">
           <div className="relative -mx-4 flex items-center justify-between">
             <div className="w-60 max-w-full px-4 xl:mr-12">
-              <Link
-                to="/"
-                className={`header-logo block w-full ${
-                  sticky ? "py-5 lg:py-2" : "py-8"
-                } `}
-              >
-                <img
-                  src={logo}
-                  alt="logo"
-                  width={140}
-                  height={30}
-                  className="w-full dark:hidden"
-                />
-                <img
-                  src={logoDark}
-                  alt="logo"
-                  width={140}
-                  height={30}
-                  className="hidden w-full dark:block"
-                />
+              <Link to="/" className={`header-logo block w-full ${sticky ? "py-5 lg:py-2" : "py-8"} `}>
+                <img src={logo} alt="logo" width={140} height={30} className="w-full dark:hidden" />
+                <img src={logoDark} alt="logo" width={140} height={30} className="hidden w-full dark:block" />
               </Link>
             </div>
             <div className="flex w-full items-center justify-between px-4">
@@ -101,9 +99,7 @@ const Header = () => {
                 <nav
                   id="navbarCollapse"
                   className={`navbar absolute right-0 z-30 w-[250px] rounded border-[.5px] border-body-color/50 bg-white px-6 py-4 duration-300 dark:border-body-color/20 dark:bg-dark lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 ${
-                    navbarOpen
-                      ? "visibility top-full opacity-100"
-                      : "invisible top-[120%] opacity-0"
+                    navbarOpen ? "visibility top-full opacity-100" : "invisible top-[120%] opacity-0"
                   }`}
                 >
                   <ul className="block lg:flex lg:space-x-12">
@@ -161,16 +157,54 @@ const Header = () => {
                 </nav>
               </div>
               <div className="flex items-center justify-end pr-16 lg:pr-0">
-                <Link
+                {/* <Link
                   to="/connectwallet"
                   className="hidden px-7 py-3 text-base font-medium text-dark hover:opacity-70 dark:text-white md:block"
                   >
                   Connect Wallet
-                </Link>
-                <Link
-                  to="/signin"
-                  className="hidden px-7 py-3 text-base font-medium text-dark hover:opacity-70 dark:text-white md:block"
-                >
+                </Link> */}
+                {!activeAddress &&
+                  providers?.map((provider) => (
+                    <button
+                      data-test-id={`${provider.metadata.id}-connect`}
+                      className="btn border-teal-800 border-1  m-2"
+                      key={`provider-${provider.metadata.id}`}
+                      onClick={() => {
+                        return provider.connect();
+                      }}
+                    >
+                      {!isKmd(provider) && (
+                        <img
+                          alt={`wallet_icon_${provider.metadata.id}`}
+                          src={provider.metadata.icon}
+                          style={{ objectFit: "contain", width: "30px", height: "auto" }}
+                        />
+                      )}
+                      <span>{isKmd(provider) ? "LocalNet Wallet" : provider.metadata.name}</span>
+                    </button>
+                  ))}
+                {activeAddress && <>{ellipseAddress(activeAddress)}</>}
+                {/* <button
+                    className="btn btn-warning"
+                    data-test-id="logout"
+                    onClick={() => {
+                      if (providers) {
+                        const activeProvider = providers.find((p) => p.isActive);
+                        if (activeProvider) {
+                          activeProvider.disconnect();
+                        } else {
+                          // Required for logout/cleanup of inactive providers
+                          // For instance, when you login to localnet wallet and switch network
+                          // to testnet/mainnet or vice verse.
+                          localStorage.removeItem("txnlab-use-wallet");
+                          window.location.reload();
+                        }
+                      }
+                    }}
+                  >
+                    Logout
+                  </button> */}
+                <Link to="/signin" className="hidden px-7 py-3 text-base font-medium text-dark hover:opacity-70 dark:text-white md:block">
                   Sign In
                 </Link>
                 <Link
