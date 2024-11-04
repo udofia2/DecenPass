@@ -48,7 +48,7 @@ const Layout = () => {
     <Providers>
       <Header />
       <Outlet />
-      <Footer />
+      
       <ScrollToTop />
     </Providers>
   );
