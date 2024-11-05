@@ -1,7 +1,7 @@
 import { DeflyWalletConnect } from "@blockshake/defly-connect";
 import { DaffiWalletConnect } from "@daffiwallet/connect";
 import { PeraWalletConnect } from "@perawallet/connect";
-import { PROVIDER_ID, ProvidersArray, WalletProvider, useInitializeProviders } from "@txnlab/use-wallet";
+import { PROVIDER_ID, ProvidersArray, WalletProvider, useInitializeProviders, useWallet } from "@txnlab/use-wallet";
 import algosdk from "algosdk";
 import { SnackbarProvider } from "notistack";
 import { getAlgodConfigFromViteEnvironment, getKmdConfigFromViteEnvironment } from "./utils/network/getAlgoClientConfigs";
@@ -16,6 +16,9 @@ import SigninPage from "./app/signin/page";
 import SignupPage from "./app/signup/page";
 import ContactPage from "./app/contact/page";
 import ConnectWalletPage from "./ConnectWalletPage";
+import ConnectedLayout from "./ConnectedLayout";
+import DashboardApp from "./dashboard/App";
+import Profile from "./dashboard/Profile";
 
 let providersArray: ProvidersArray;
 if (import.meta.env.VITE_ALGOD_NETWORK === "") {
@@ -43,17 +46,26 @@ if (import.meta.env.VITE_ALGOD_NETWORK === "") {
   ];
 }
 
-const Layout = () => {
+const HomeLayout = () => {
   return (
     <Providers>
       <Header />
       <Outlet />
-      
+
       <ScrollToTop />
     </Providers>
   );
 };
 
+const Layout = () => {
+  const { activeAddress } = useWallet();
+  return (
+    <Providers>
+      {activeAddress ? <DashboardApp /> : <HomeLayout />}
+      <ScrollToTop />
+    </Providers>
+  );
+};
 
 const router = createBrowserRouter([
   {
@@ -68,14 +80,14 @@ const router = createBrowserRouter([
         path: "/about",
         element: <AboutPage />,
       },
-      {
-        path: "/signin",
-        element: <SigninPage />,
-      },
-      {
-        path: "/signup",
-        element: <SignupPage />,
-      },
+      // {
+      //   path: "/signin",
+      //   element: <SigninPage />,
+      // },
+      // {
+      //   path: "/signup",
+      //   element: <SignupPage />,
+      // },
       {
         path: "/contact",
         element: <ContactPage />,
@@ -84,13 +96,27 @@ const router = createBrowserRouter([
         path: "/connectwallet",
         element: <ConnectWalletPage />,
       },
+      {
+        path: "/dashboard",
+        element: <ConnectedLayout />,
+        children: [
+          {
+            path: "/dashboard/profile",
+            element: <Profile />,
+          },
+          {
+            path: "/dashboard/register-user",
+            element: <SignupPage />,
+          },
+        ],
+      },
     ],
   },
 ]);
 
 export default function App() {
   const algodConfig = getAlgodConfigFromViteEnvironment();
-
+  const { providers, activeAddress } = useWallet();
   const walletProviders = useInitializeProviders({
     providers: providersArray,
     nodeConfig: {
@@ -105,7 +131,6 @@ export default function App() {
   return (
     <SnackbarProvider maxSnack={3}>
       <WalletProvider value={walletProviders}>
-         
         <RouterProvider router={router} />
       </WalletProvider>
     </SnackbarProvider>
