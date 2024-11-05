@@ -1,6 +1,96 @@
 # decent_pass-contracts
 
-This project has been generated using AlgoKit. See below for default getting started instructions.
+The DecentPass smart contract is designed to facilitate user profile verification in a decentralized manner using validators. Validators can stake tokens to participate in the verification process, and once a user has enough validator confirmations, their profile is considered verified.
+
+
+## Smart Contract Functions
+
+- register_user(user_id: UInt64, profile_data: String)
+
+   - Registers a user with a unique user_id, name, age, and address.
+   - Sets the initial verification status to unverified (0).
+
+   Example:
+   ```python
+   decent_pass_smartcontract.register_user(1, "John Doe", UInt64(30), "123 Main St, Springfield")
+
+
+- assign_validator(validator: Account, stake_amount: UInt64)
+
+    Allows a validator to stake tokens (minimum of 1000 tokens) to participate in the verification process.
+
+   Example: 
+   ```python
+
+   decent_pass_smartcontract.assign_validator(validator_account, UInt64(5000))
+
+- verify_user(user_id: UInt64, validator: Account)
+
+    Validators use this method to verify user profiles.
+    It requires confirmations from at least required_validators validators before marking a user as verified.
+
+   Example:
+   ```python
+   
+   decent_pass_smartcontract.verify_user(1, validator_account)
+
+- claim_stake(validator: Account)
+
+    Validators can claim their staked amount along with any rewards minus penalties.
+
+   Example:
+   ```python
+   
+   decent_pass_smartcontract.claim_stake(validator_account)
+
+- retrieve_profile(user_id: UInt64) -> String
+
+    Allows validators to retrieve the profile data of a user based on their user_id.
+
+   Example:
+   ```bash
+
+   decent_pass_smartcontract.retrieve_profile(1)
+
+- penalty_validator(validator: Account, penalty_amount: UInt64)
+
+    Penalizes a validator for inaccurate verification.
+
+   Example:
+   ```python
+
+   decent_pass_smartcontract.penalty_validator(validator_account, UInt64(100))
+
+- adjust_validator_reward(validator: Account, reward_amount: UInt64)
+
+    Increases the validator’s reward for successfully verifying a user.
+
+   Example:
+   ```python
+
+      decent_pass_smartcontract.adjust_validator_reward(validator_account, UInt64(200))
+
+
+- reset_verification(user_id: UInt64)
+
+    Helper method used to reset a user’s verification status if re-verification is required.
+
+   Example:
+
+   ```python
+
+   decent_pass_smartcontract.reset_verification(1)
+
+- retrieve_last_verified_profile() -> UInt64
+
+    Retrieves the user_id of the last verified profile.
+
+   Example:
+
+   ```python
+      decent_pass_smartcontract.retrieve_last_verified_profile()
+
+
 
 # Setup
 
@@ -15,6 +105,9 @@ This project has been generated using AlgoKit. See below for default getting sta
 
 #### 1. Clone the Repository
 Start by cloning this repository to your local machine.
+```bash
+$ git clone https://github.com/udofia2/DecentPass.git
+```
 
 #### 2. Install Pre-requisites
 Ensure the following pre-requisites are installed and properly configured:
@@ -37,56 +130,7 @@ Directly manage and interact with your project using AlgoKit commands:
 
 1. **Build Contracts**: `algokit project run build` compiles all smart contracts. You can also specify a specific contract by passing the name of the contract folder as an extra argument.
 For example: `algokit project run build -- hello_world` will only build the `hello_world` contract.
+
 2. **Deploy**: Use `algokit project deploy localnet` to deploy contracts to the local network. You can also specify a specific contract by passing the name of the contract folder as an extra argument.
-For example: `algokit project deploy localnet -- hello_world` will only deploy the `hello_world` contract.
-
-#### VS Code 
-For a seamless experience with breakpoint debugging and other features:
-
-1. **Open Project**: In VS Code, open the repository root.
-2. **Install Extensions**: Follow prompts to install recommended extensions.
-3. **Debugging**:
-   - Use `F5` to start debugging.
-   - **Windows Users**: Select the Python interpreter at `./.venv/Scripts/python.exe` via `Ctrl/Cmd + Shift + P` > `Python: Select Interpreter` before the first run.
-
-#### JetBrains IDEs
-While primarily optimized for VS Code, JetBrains IDEs are supported:
-
-1. **Open Project**: In your JetBrains IDE, open the repository root.
-2. **Automatic Setup**: The IDE should configure the Python interpreter and virtual environment.
-3. **Debugging**: Use `Shift+F10` or `Ctrl+R` to start debugging. Note: Windows users may encounter issues with pre-launch tasks due to a known bug. See [JetBrains forums](https://youtrack.jetbrains.com/issue/IDEA-277486/Shell-script-configuration-cannot-run-as-before-launch-task) for workarounds.
-
-## AlgoKit Workspaces and Project Management
-This project supports both standalone and monorepo setups through AlgoKit workspaces. Leverage [`algokit project run`](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/features/project/run.md) commands for efficient monorepo project orchestration and management across multiple projects within a workspace.
-
-## AlgoKit Generators
-
-This template provides a set of [algokit generators](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/features/generate.md) that allow you to further modify the project instantiated from the template to fit your needs, as well as giving you a base to build your own extensions to invoke via the `algokit generate` command.
-
-### Generate Smart Contract 
-
-By default the template creates a single `HelloWorld` contract under decent_pass_smartcontract folder in the `smart_contracts` directory. To add a new contract:
-
-1. From the root of the project (`../`) execute `algokit generate smart-contract`. This will create a new starter smart contract and deployment configuration file under `{your_contract_name}` subfolder in the `smart_contracts` directory.
-2. Each contract potentially has different creation parameters and deployment steps. Hence, you need to define your deployment logic in `deploy_config.py`file.
-3. `config.py` file will automatically build all contracts in the `smart_contracts` directory. If you want to build specific contracts manually, modify the default code provided by the template in `config.py` file.
-
-> Please note, above is just a suggested convention tailored for the base configuration and structure of this template. The default code supplied by the template in `config.py` and `index.ts` (if using ts clients) files are tailored for the suggested convention. You are free to modify the structure and naming conventions as you see fit.
-
-### Generate '.env' files
-
-By default the template instance does not contain any env files. Using [`algokit project deploy`](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/features/project/deploy.md) against `localnet` | `testnet` | `mainnet` will use default values for `algod` and `indexer` unless overwritten via `.env` or `.env.{target_network}`. 
-
-To generate a new `.env` or `.env.{target_network}` file, run `algokit generate env-file`
-
-# Tools
-
-This project makes use of Algorand Python to build Algorand smart contracts. The following tools are in use:
-
-- [Algorand](https://www.algorand.com/) - Layer 1 Blockchain; [Developer portal](https://developer.algorand.org/), [Why Algorand?](https://developer.algorand.org/docs/get-started/basics/why_algorand/)
-- [AlgoKit](https://github.com/algorandfoundation/algokit-cli) - One-stop shop tool for developers building on the Algorand network; [docs](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/algokit.md), [intro tutorial](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/tutorials/intro.md)
-- [Algorand Python](https://github.com/algorandfoundation/puya) - A semantically and syntactically compatible, typed Python language that works with standard Python tooling and allows you to express smart contracts (apps) and smart signatures (logic signatures) for deployment on the Algorand Virtual Machine (AVM); [docs](https://github.com/algorandfoundation/puya), [examples](https://github.com/algorandfoundation/puya/tree/main/examples)
-- [AlgoKit Utils](https://github.com/algorandfoundation/algokit-utils-py) - A set of core Algorand utilities that make it easier to build solutions on Algorand.
-- [Poetry](https://python-poetry.org/): Python packaging and dependency management.
-It has also been configured to have a productive dev experience out of the box in [VS Code](https://code.visualstudio.com/), see the [.vscode](./.vscode) folder.
+For example: `algokit project deploy localnet -- decent_pass_smartcontract` will only deploy the `decent_pass_smartcontract` contract.
 
