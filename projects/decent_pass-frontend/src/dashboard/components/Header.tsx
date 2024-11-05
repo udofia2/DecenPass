@@ -1,8 +1,4 @@
-import { Link } from 'react-router-dom';
-import DarkModeSwitcher from './DarkModeSwitcher';
-import DropdownMessage from './DropdownMessage';
-import DropdownNotification from './DropdownNotification';
-import DropdownUser from './DropdownUser';
+import { Link } from 'react-router-dom'; 
 
 import logo from "../../assets/images/logo/logo-2.svg";
 import logoDark from "../../assets/images/logo/logo.svg";
@@ -118,7 +114,7 @@ const Header = (props: {
           </ul>
 
           {/* <!-- User Area --> */}
-          <DropdownUser />
+          {/* <DropdownUser /> */}
           {/* <!-- User Area --> */}
         </div>
       </div>
