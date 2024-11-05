@@ -1,6 +1,16 @@
 import { Link } from "react-router-dom";
+import * as algokit from '@algorandfoundation/algokit-utils'
 
 import { Metadata } from "next";
+import { Provider, useWallet } from "@txnlab/use-wallet";
+
+import { useState } from "react";
+import { DecentPassSmartContractClient } from "../../contracts/DecentPassSmartcontract";
+import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from "../../utils/network/getAlgoClientConfigs";
+import { TransactionSignerAccount } from "@algorandfoundation/algokit-utils/types/account";
+import { AppDetails } from "@algorandfoundation/algokit-utils/types/app-client";
+import { enqueueSnackbar } from "notistack";
+
 
 export const metadata: Metadata = {
   title: "Sign Up Page | Free Next.js Template for Startup and SaaS",
@@ -9,6 +19,48 @@ export const metadata: Metadata = {
 };
 
 const SignupPage = () => {
+
+  const { signer, activeAddress } = useWallet()
+
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const indexerConfig = getIndexerConfigFromViteEnvironment()
+
+  const indexer = algokit.getAlgoIndexerClient({
+    server: indexerConfig.server,
+    port: indexerConfig.port,
+    token: indexerConfig.token,
+  })
+  const appDetails = {
+    resolveBy: 'creatorAndName',
+    sender: { signer, addr: activeAddress } as TransactionSignerAccount,
+    creatorAddress: activeAddress,
+    findExistingUsing: indexer,
+  } as AppDetails
+
+  
+  const algodConfig = getAlgodConfigFromViteEnvironment()
+
+  const algodClient = algokit.getAlgoClient({
+    server: algodConfig.server,
+    port: algodConfig.port,
+    token: algodConfig.token,
+  })
+
+
+  const isKmd = (provider: Provider) => provider.metadata.name.toLowerCase() === 'kmd'
+  const dPClient = new DecentPassSmartContractClient(appDetails, algodClient)
+
+  const callRegisterFn = async () => {
+    setLoading(true);
+    console.log("registering")
+    await dPClient.registerUser({userId: BigInt(5), profileData: "Joel"}).catch((e: Error) => {
+      enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
+      setLoading(false)
+      return
+    })
+    setLoading(false);
+  }
   return (
     <>
       <section className="relative z-10 overflow-hidden pb-16 pt-36 md:pb-20 lg:pb-28 lg:pt-[180px]">
@@ -16,13 +68,13 @@ const SignupPage = () => {
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4">
               <div className="shadow-three mx-auto max-w-[500px] rounded bg-white px-6 py-10 dark:bg-dark sm:p-[60px]">
-                <h3 className="mb-3 text-center text-2xl font-bold text-black dark:text-white sm:text-3xl">
-                  Create your account
+                <h3 className="mb-11 text-center text-2xl font-bold text-black dark:text-white sm:text-3xl">
+                  Register User
                 </h3>
-                <p className="mb-11 text-center text-base font-medium text-body-color">
+                {/* <p className="mb-11 text-center text-base font-medium text-body-color">
                   It’s totally free and super easy
-                </p>
-                <button className="border-stroke dark:text-body-color-dark dark:shadow-two mb-6 flex w-full items-center justify-center rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none">
+                </p> */}
+                {/* <button className="border-stroke dark:text-body-color-dark dark:shadow-two mb-6 flex w-full items-center justify-center rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none">
                   <span className="mr-3">
                     <svg
                       width="20"
@@ -57,9 +109,9 @@ const SignupPage = () => {
                     </svg>
                   </span>
                   Sign in with Google
-                </button>
+                </button> */}
 
-                <button className="border-stroke dark:text-body-color-dark dark:shadow-two mb-6 flex w-full items-center justify-center rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none">
+                {/* <button className="border-stroke dark:text-body-color-dark dark:shadow-two mb-6 flex w-full items-center justify-center rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none">
                   <span className="mr-3">
                     <svg
                       fill="currentColor"
@@ -72,15 +124,15 @@ const SignupPage = () => {
                     </svg>
                   </span>
                   Sign in with Github
-                </button>
-                <div className="mb-8 flex items-center justify-center">
+                </button> */}
+                {/* <div className="mb-8 flex items-center justify-center">
                   <span className="hidden h-[1px] w-full max-w-[60px] bg-body-color/50 sm:block"></span>
                   <p className="w-full px-5 text-center text-base font-medium text-body-color">
                     Or, register with your email
                   </p>
                   <span className="hidden h-[1px] w-full max-w-[60px] bg-body-color/50 sm:block"></span>
-                </div>
-                <form>
+                </div> */}
+                {/* <form> */}
                   <div className="mb-8">
                     <label
                       htmlFor="name"
@@ -96,7 +148,7 @@ const SignupPage = () => {
                       className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
                     />
                   </div>
-                  <div className="mb-8">
+                  {/* <div className="mb-8">
                     <label
                       htmlFor="email"
                       className="mb-3 block text-sm text-dark dark:text-white"
@@ -125,7 +177,7 @@ const SignupPage = () => {
                       placeholder="Enter your Password"
                       className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
                     />
-                  </div>
+                  </div> */}
                   <div className="mb-8 flex">
                     <label
                       htmlFor="checkboxLabel"
@@ -156,32 +208,23 @@ const SignupPage = () => {
                           </span>
                         </div>
                       </div>
-                      <span>
-                        By creating account means you agree to the
-                        <a href="#0" className="text-primary hover:underline">
-                          {" "}
-                          Terms and Conditions{" "}
-                        </a>
-                        , and our
-                        <a href="#0" className="text-primary hover:underline">
-                          {" "}
-                          Privacy Policy{" "}
-                        </a>
-                      </span>
+                    
                     </label>
                   </div>
                   <div className="mb-6">
-                    <button className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300 hover:bg-primary/90">
-                      Sign up
+                    {loading ? (
+                      
+                    <button onClick={() => callRegisterFn()} className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300 hover:bg-primary/90">
+                      ...
                     </button>
+                    ) : (
+                    <button onClick={() => callRegisterFn()} className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300 hover:bg-primary/90">
+                      Register
+                    </button>
+                    )}
                   </div>
-                </form>
-                <p className="text-center text-base font-medium text-body-color">
-                  Already using Startup?{" "}
-                  <Link to="/signin" className="text-primary hover:underline">
-                    Sign in
-                  </Link>
-                </p>
+                {/* </form> */}
+              
               </div>
             </div>
           </div>

@@ -4,7 +4,7 @@ import { useWallet } from '@txnlab/use-wallet'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 import { AppDetails } from '@algorandfoundation/algokit-utils/types/app-client'
-import { DecentPassSmartcontractClient } from '../contracts/DecentPassSmartcontract'
+import { DecentPassSmartContractClient } from '../contracts/DecentPassSmartcontract'
 import { OnSchemaBreak, OnUpdate } from '@algorandfoundation/algokit-utils/types/app'
 import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
 
@@ -48,7 +48,7 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
       findExistingUsing: indexer,
     } as AppDetails
 
-    const appClient = new DecentPassSmartcontractClient(appDetails, algodClient)
+    const appClient = new DecentPassSmartContractClient(appDetails, algodClient)
     const deployParams = {
       onSchemaBreak: OnSchemaBreak.AppendApp,
       onUpdate: OnUpdate.AppendApp,
@@ -59,13 +59,13 @@ const AppCalls = ({ openModal, setModalState }: AppCallsInterface) => {
       return
     })
 
-    const response = await appClient.hello({ name: contractInput }).catch((e: Error) => {
-      enqueueSnackbar(`Error calling the contract: ${e.message}`, { variant: 'error' })
-      setLoading(false)
-      return
-    })
+    // const response = await appClient.hello({ name: contractInput }).catch((e: Error) => {
+    //   enqueueSnackbar(`Error calling the contract: ${e.message}`, { variant: 'error' })
+    //   setLoading(false)
+    //   return
+    // })
 
-    enqueueSnackbar(`Response from the contract: ${response?.return}`, { variant: 'success' })
+    // enqueueSnackbar(`Response from the contract: ${response?.return}`, { variant: 'success' })
     setLoading(false)
   }
 
