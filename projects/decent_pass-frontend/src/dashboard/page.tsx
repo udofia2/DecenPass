@@ -5,8 +5,8 @@ import { Metadata } from "next";
 import { Provider, useWallet } from "@txnlab/use-wallet";
 
 import { useState } from "react";
-import { DecentPassSmartContractClient } from "../../contracts/DecentPassSmartcontract";
-import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from "../../utils/network/getAlgoClientConfigs";
+import { DecentPassSmartContractClient } from "../contracts/DecentPassSmartcontract";
+import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from "../utils/network/getAlgoClientConfigs";
 import { TransactionSignerAccount } from "@algorandfoundation/algokit-utils/types/account";
 import { AppDetails } from "@algorandfoundation/algokit-utils/types/app-client";
 import { enqueueSnackbar } from "notistack";
@@ -54,7 +54,8 @@ const SignupPage = () => {
   const callRegisterFn = async () => {
     setLoading(true);
     console.log("registering")
-    await dPClient.registerUser({userId: BigInt(5), profileData: "Joel"}).catch((e: Error) => {
+    await dPClient.registerUser([  BigInt(5),   "Joel"]).catch((e: Error) => {
+      console.log(e);
       enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
       setLoading(false)
       return

@@ -23,7 +23,7 @@ function DashboardApp() {
       <Routes>
         {/* <Route path="/auth/signin" element={<SignIn />} />
         <Route path="/auth/signup" element={<SignUp />} /> */}
-        <Route path="/dashboard" element={<DefaultLayout />}>
+        <Route path="/" element={<DefaultLayout />}>
           <Route path="/dashboard" element={<ECommerce />} />
           {routes.map((routes, index) => {
             const { path, component: Component } = routes;

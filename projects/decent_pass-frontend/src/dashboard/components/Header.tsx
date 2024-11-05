@@ -92,11 +92,11 @@ const Header = (props: {
                 </svg>
               </button>
 
-              <input
+              {/* <input
                 type="text"
                 placeholder="Type to search..."
                 className="w-full bg-transparent pr-4 pl-9 focus:outline-none"
-              />
+              /> */}
             </div>
           </form>
         </div>
@@ -109,7 +109,7 @@ const Header = (props: {
             {/* <!-- Dark Mode Toggler --> */}
 
             {/* <!-- Notification Menu Area --> */}
-            <DropdownNotification />
+            {/* <DropdownNotification /> */}
             {/* <!-- Notification Menu Area --> */}
 
             {/* <!-- Chat Notification Area --> */}

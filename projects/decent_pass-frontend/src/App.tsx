@@ -13,12 +13,14 @@ import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import AboutPage from "./app/about/page";
 import Home from "./app/page";
 import SigninPage from "./app/signin/page";
-import SignupPage from "./app/signup/page";
+import SignupPage from "./dashboard/page";
 import ContactPage from "./app/contact/page";
 import ConnectWalletPage from "./ConnectWalletPage";
 import ConnectedLayout from "./ConnectedLayout";
 import DashboardApp from "./dashboard/App";
 import Profile from "./dashboard/Profile";
+import Settings from "./dashboard/Settings";
+import RegisterUser from "./dashboard/RegisterUser";
 
 let providersArray: ProvidersArray;
 if (import.meta.env.VITE_ALGOD_NETWORK === "") {
@@ -86,7 +88,7 @@ const router = createBrowserRouter([
       // },
       // {
       //   path: "/signup",
-      //   element: <SignupPage />,
+      //   element: <SignupPage />,`
       // },
       {
         path: "/contact",
@@ -105,8 +107,12 @@ const router = createBrowserRouter([
             element: <Profile />,
           },
           {
-            path: "/dashboard/register-user",
-            element: <SignupPage />,
+            path: "/dashboard/register",
+            element: <RegisterUser />,
+          },
+          {
+            path: "/dashboard/settings",
+            element: <Settings />,
           },
         ],
       },
