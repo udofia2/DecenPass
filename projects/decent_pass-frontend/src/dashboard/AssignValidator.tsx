@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   // other metadata
 };
 
-const RegisterUser = () => {
+const AssignValidator = () => {
 
   const { signer, activeAddress } = useWallet()
 
@@ -88,7 +88,7 @@ const RegisterUser = () => {
             <div className="w-full px-4">
               <div className="shadow-three mx-auto max-w-[500px] rounded bg-white px-6 py-10 dark:bg-dark sm:p-[60px]">
                 <h3 className="mb-11 text-center text-2xl font-bold text-black dark:text-white sm:text-3xl">
-                  Register User
+                  Assign Validator
                 </h3>
               
                   <div className="mb-8">
@@ -97,12 +97,28 @@ const RegisterUser = () => {
                       className="mb-3 block text-sm text-dark dark:text-white"
                     >
                       {" "}
-                      Full Name{" "}
+                      Validator{" "}
                     </label>
                     <input
                       type="text"
                       name="name"
-                      placeholder="Enter your full name"
+                      placeholder="Enter value"
+                      onChange={(e) => setName(e.target.value)}
+                      className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
+                    />
+                  </div>
+                  <div className="mb-8">
+                    <label
+                      htmlFor="name"
+                      className="mb-3 block text-sm text-dark dark:text-white"
+                    >
+                      {" "}
+                      Stake amount{" "}
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Enter value"
                       onChange={(e) => setName(e.target.value)}
                       className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
                     />
@@ -117,7 +133,7 @@ const RegisterUser = () => {
                     </button>
                     ) : (
                     <button onClick={() => callRegisterFn()} className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300 hover:bg-primary/90">
-                      Register
+                      Assign
                     </button>
                     )}
                   </div>
@@ -189,4 +205,4 @@ const RegisterUser = () => {
   );
 };
 
-export default RegisterUser;
+export default AssignValidator;

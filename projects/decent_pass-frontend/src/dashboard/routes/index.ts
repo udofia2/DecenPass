@@ -1,4 +1,7 @@
 import { lazy } from 'react';
+import AssignValidator from '../AssignValidator';
+import VerifyUser from '../VerifyUser';
+import RetrieveProfile from '../RetrieveProfile';
 
 const FormElements = lazy(() => import('../Form/FormElements'));
 const FormLayout = lazy(() => import('../Form/FormLayout'));
@@ -24,6 +27,21 @@ const coreRoutes = [
     path: '/dashboard/register',
     title: 'Register',
     component: RegisterUser,
+  },
+  {
+    path: '/dashboard/verify-user',
+    title: 'Verify User',
+    component: VerifyUser,
+  },
+  {
+    path: '/dashboard/assign-validator',
+    title: 'Assign Validator',
+    component: AssignValidator,
+  },
+  {
+    path: '/dashboard/retrieve-profile',
+    title: 'Retrieve Profile',
+    component: RetrieveProfile,
   },
 ];
 

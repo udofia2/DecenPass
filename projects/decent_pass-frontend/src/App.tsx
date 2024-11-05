@@ -21,6 +21,9 @@ import DashboardApp from "./dashboard/App";
 import Profile from "./dashboard/Profile";
 import Settings from "./dashboard/Settings";
 import RegisterUser from "./dashboard/RegisterUser";
+import RetrieveProfile from "./dashboard/RetrieveProfile";
+import VerifyUser from "./dashboard/VerifyUser";
+import AssignValidator from "./dashboard/AssignValidator";
 
 let providersArray: ProvidersArray;
 if (import.meta.env.VITE_ALGOD_NETWORK === "") {
@@ -109,6 +112,18 @@ const router = createBrowserRouter([
           {
             path: "/dashboard/register",
             element: <RegisterUser />,
+          },
+          {
+            path: "/dashboard/retrieve-profile",
+            element: <RetrieveProfile />,
+          },
+          {
+            path: "/dashboard/verify-user",
+            element: <VerifyUser />,
+          },
+          {
+            path: "/dashboard/assign-validator",
+            element: <AssignValidator />,
           },
           {
             path: "/dashboard/settings",

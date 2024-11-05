@@ -18,13 +18,14 @@ export const metadata: Metadata = {
   // other metadata
 };
 
-const RegisterUser = () => {
+const RetrieveProfile = () => {
 
   const { signer, activeAddress } = useWallet()
 
   const [loading, setLoading] = useState<boolean>(false);
 
   const [userName, setName ] = useState<string>("");
+  const [userId, setUserId ] = useState<string>("");
 
   const indexerConfig = getIndexerConfigFromViteEnvironment()
 
@@ -63,6 +64,7 @@ const RegisterUser = () => {
       console.log("registering")
       const bare = await dPClient.create.bare().then((res) => {
         console.log('bare', res);
+        enqueueSnackbar(`Successfully deployed the contract`, { variant: 'success' })
       }).catch((e: Error) => {
         enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
         setLoading(false)
@@ -189,4 +191,4 @@ const RegisterUser = () => {
   );
 };
 
-export default RegisterUser;
+export default RetrieveProfile;
